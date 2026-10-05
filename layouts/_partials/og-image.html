@@ -18,7 +18,7 @@
   {{- $width := 18 -}}
   {{- $lines := slice -}}
   {{- $current := "" -}}
-  {{- range (upper .Title | replaceRE `\s+` " " | strings.TrimSpace | split " ") -}}
+  {{- range (upper (partial "title.html" .) | replaceRE `\s+` " " | strings.TrimSpace | split " ") -}}
     {{- $candidate := cond (eq $current "") . (printf "%s %s" $current .) -}}
     {{- if le (len $candidate) $width -}}
       {{- $current = $candidate -}}

@@ -11,7 +11,7 @@
 {{- range site.RegularPages -}}
   {{- $blocks := math.Ceil (div (len .RawContent | float) 254.0) | int -}}
   {{- $entries = $entries | append (dict
-      "name" (upper (substr (or .LinkTitle .Title) 0 16))
+      "name" (upper (substr (or .LinkTitle (partial "title.html" .)) 0 16))
       "slug" (path.Base .RelPermalink)
       "url" .RelPermalink
       "blocks" (cond (lt $blocks 1) 1 $blocks)
@@ -20,7 +20,7 @@
 {{- end -}}
 {{- range site.Sections -}}
   {{- $entries = $entries | append (dict
-      "name" (upper (substr (or .LinkTitle .Title) 0 16))
+      "name" (upper (substr (or .LinkTitle (partial "title.html" .)) 0 16))
       "slug" (path.Base .RelPermalink)
       "url" .RelPermalink
       "blocks" 1

@@ -1,6 +1,6 @@
 {{- /* og.html — Open Graph and Twitter cards, with a build-time image. */ -}}
 <meta property="og:site_name" content="{{ site.Title }}">
-<meta property="og:title" content="{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }}{{ end }}">
+<meta property="og:title" content="{{ if .IsHome }}{{ site.Title }}{{ else }}{{ partial "title.html" . }}{{ end }}">
 <meta property="og:url" content="{{ .Permalink }}">
 <meta property="og:type" content="{{ cond .IsPage "article" "website" }}">
 {{- with or .Description .Summary site.Params.description }}

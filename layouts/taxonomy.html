@@ -1,6 +1,6 @@
 {{ define "main" }}
   <header class="post__head">
-    <h1 class="post__title">{{ .Title }}</h1>
+    <h1 class="post__title">{{ partial "title.html" . }}</h1>
     {{- with .Content }}
     <div class="post__body">{{ . }}</div>
     {{- end }}
@@ -15,7 +15,7 @@
       {{- $blocks = add $blocks (cond (lt $b 1) 1 $b) -}}
     {{- end -}}
     {{- $entries = $entries | append (dict
-        "name" (upper (substr (or .LinkTitle .Title) 0 16))
+        "name" (upper (substr (or .LinkTitle (partial "title.html" .)) 0 16))
         "url" .RelPermalink
         "blocks" (cond (lt $blocks 1) 1 $blocks)
         "type" "REL"

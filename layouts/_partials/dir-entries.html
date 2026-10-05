@@ -23,7 +23,7 @@
     {{- $type = "SEQ" -}}
   {{- end -}}
   {{- $entries = $entries | append (dict
-      "name" (upper (substr (or .LinkTitle .Title) 0 16))
+      "name" (upper (substr (or .LinkTitle (partial "title.html" .)) 0 16))
       "url" .RelPermalink
       "blocks" $blocks
       "type" $type

@@ -1,7 +1,7 @@
 {{ define "main" }}
 <article class="post">
   <header class="post__head">
-    <h1 class="post__title">{{ .Title }}</h1>
+    <h1 class="post__title">{{ partial "title.html" . }}</h1>
     {{- partial "post-meta.html" . }}
   </header>
   <div class="post__body">
@@ -17,10 +17,10 @@
   {{- if or .PrevInSection .NextInSection }}
   <nav class="post__nav" aria-label="{{ i18n "postNav" }}">
     {{- with .PrevInSection }}
-    <a href="{{ .RelPermalink }}">&larr; LOAD&quot;{{ upper (substr (or .LinkTitle .Title) 0 16) }}&quot;</a>
+    <a href="{{ .RelPermalink }}">&larr; LOAD&quot;{{ upper (substr (or .LinkTitle (partial "title.html" .)) 0 16) }}&quot;</a>
     {{- end }}
     {{- with .NextInSection }}
-    <a href="{{ .RelPermalink }}">LOAD&quot;{{ upper (substr (or .LinkTitle .Title) 0 16) }}&quot; &rarr;</a>
+    <a href="{{ .RelPermalink }}">LOAD&quot;{{ upper (substr (or .LinkTitle (partial "title.html" .)) 0 16) }}&quot; &rarr;</a>
     {{- end }}
   </nav>
   {{- end }}

@@ -1,0 +1,19 @@
+{{- /*
+  title.html — a page's title, and never an empty string.
+
+  A page with no front matter has no .Title, and `<h1></h1>` is both invalid
+  HTML and a page a screen reader cannot announce. Hugo does not fill that in,
+  so the theme does: the filename, humanised, which is what the author would
+  have written anyway. Sections and taxonomies fall back to their path.
+*/ -}}
+{{- $title := .Title -}}
+{{- if not $title -}}
+  {{- with .File -}}
+    {{- $title = .ContentBaseName -}}
+  {{- else -}}
+    {{- $title = path.Base .RelPermalink -}}
+  {{- end -}}
+  {{- $title = $title | replaceRE `[-_]+` " " | strings.TrimSpace | title -}}
+{{- end -}}
+{{- if not $title }}{{ $title = site.Title }}{{ end -}}
+{{- return $title -}}

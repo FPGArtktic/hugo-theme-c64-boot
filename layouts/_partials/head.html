@@ -4,7 +4,7 @@
 
 {{- /* Title: upper-cased, Hugo-rendered, authoritative. tab.js only borrows
        it while the machine is busy or the tab is in the background (15.1). */ -}}
-{{- $title := printf "%s · %s" (upper .Title) (upper site.Title) -}}
+{{- $title := printf "%s · %s" (upper (partial "title.html" .)) (upper site.Title) -}}
 {{- if .IsHome }}{{ $title = printf "%s · READY." (upper site.Title) }}{{ end -}}
 {{- /* Two spaces before ERROR is how the KERNAL prints it. They are U+00A0,
        because `hugo --minify` collapses runs of ASCII whitespace in <title>

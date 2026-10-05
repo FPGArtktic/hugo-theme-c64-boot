@@ -1,6 +1,6 @@
 {{ define "main" }}
   <header class="post__head">
-    <h1 class="post__title">{{ .Title }}</h1>
+    <h1 class="post__title">{{ partial "title.html" . }}</h1>
     {{- with .Content }}
     <div class="post__body">{{ . }}</div>
     {{- end }}

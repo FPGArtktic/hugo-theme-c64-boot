@@ -11,7 +11,7 @@
     {{- if .IsHome -}}
       LOAD&quot;$&quot;,8
     {{- else -}}
-      LOAD&quot;{{ upper (substr (or .LinkTitle .Title) 0 16) }}&quot;,8,1
+      LOAD&quot;{{ upper (substr (or .LinkTitle (partial "title.html" .)) 0 16) }}&quot;,8,1
     {{- end -}}
   </p>
   {{- if not .IsHome }}
