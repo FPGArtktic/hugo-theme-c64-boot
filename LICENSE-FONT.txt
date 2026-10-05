@@ -1,0 +1,188 @@
+================================================================================
+hugo-theme-c64-boot — FONT LICENSES
+================================================================================
+
+The theme CODE is MIT (see LICENSE). The fonts below are licensed separately.
+Nothing in this file applies to the theme code, and the MIT license does not
+apply to the fonts.
+
+Contents
+  1. Press Start 2P  — bundled, SIL OFL 1.1, Reserved Font Name
+  2. Sixtyfour       — bundled, SIL OFL 1.1, no Reserved Font Name
+  3. C64 Pro         — NOT bundled; opt-in, Style64 license (site owner's duty)
+  4. Full OFL 1.1 text (as shipped upstream for each bundled family)
+
+The code-block font (JetBrains Mono) has its own file: LICENSE-FONT-CODE.txt.
+
+--------------------------------------------------------------------------------
+1. Press Start 2P (static/fonts/PressStart2P-Regular.woff2)
+--------------------------------------------------------------------------------
+Copyright 2012 The Press Start 2P Project Authors (cody@zone38.net),
+with Reserved Font Name "Press Start 2P".
+Licensed under the SIL Open Font License, Version 1.1.
+
+Upstream: https://github.com/google/fonts/tree/main/ofl/pressstart2p
+Upstream commit: e06fe11c39051bddaef73ec338a9d1c8175723f1
+
+The bundled WOFF2 was produced from the upstream TTF by REPACKAGING ONLY
+(woff2_compress; no glyph, table or metadata changes). Per OFL-FAQ 2.2.1 a
+format conversion is not a Modified Version, so the Reserved Font Name is kept.
+The file is NEVER subset: OFL-FAQ 2.6 treats subsetting as modification, which
+would forbid use of the Reserved Font Name. Integrity hashes: fonts.sha256.
+
+--------------------------------------------------------------------------------
+2. Sixtyfour (static/fonts/Sixtyfour[BLED,SCAN].woff2)
+--------------------------------------------------------------------------------
+Copyright 2021 The Sixtyfour Project Authors
+(https://github.com/jenskutilek/homecomputer-fonts).
+Licensed under the SIL Open Font License, Version 1.1.
+This family declares no Reserved Font Name upstream.
+
+Upstream: https://github.com/google/fonts/tree/main/ofl/sixtyfour
+Upstream commit: 8b0a1d0f5983c89bc2b93f1b5fb55f9e252744b5
+
+Repackaged to WOFF2 only and not subset, same as above. Used solely by
+the {{< petscii >}} shortcode, because it carries the block and box-drawing
+glyphs that Press Start 2P does not.
+
+--------------------------------------------------------------------------------
+3. C64 Pro — OPTIONAL, NOT INCLUDED IN THIS REPOSITORY
+--------------------------------------------------------------------------------
+params.fonts.c64pro = true makes the theme reference
+  static/fonts/C64_Pro-STYLE.woff2
+which the SITE must supply from https://style64.org/c64-truetype .
+The theme repository never contains that file and never links to it for
+download.
+
+When a site opts in, the Style64 license below binds that site: unmodified
+file, original filename, no Hugo fingerprinting, no subsetting, no download
+link, and the license text reproduced on the site's /licensing page.
+
+  C64 TrueType — License
+  Package: c64-truetype-v1.2.1-style
+  Copyright (c) 2010-2019, Style. (http://style64.org)
+
+  Following license applies to and is embedded in each of the typefaces
+  included in the C64 TrueType package. Applicable typefaces are: "C64 User",
+  "C64 User Mono", "C64 Pro", "C64 Pro Mono", "C64 Elite Mono".
+
+  You MAY NOT: sell this font; include/redistribute this font in any font
+  collection regardless of pricing; provide the font for direct download from
+  any web site.
+
+  You MAY: link to "http://style64.org/c64-truetype" in order for others to
+  download and install the font; embed this font and or its .eot and .woff
+  variants without any modification and using the same filenames they were
+  provided with for display on any web site using @font-face rules; use this
+  font in static images and vector art; include this font without any
+  modification and using the same filenames they were provided with as part of
+  a software package but ONLY if said software package is freely provided to
+  end users.
+
+  You may also contact us to negotiate a (possibly commercial) license for your
+  use outside of these guidelines at "http://style64.org/contact-style".
+
+  At all times the most recent version of this license can be found at
+  "http://style64.org/c64-truetype/license".
+
+--------------------------------------------------------------------------------
+4. SIL OPEN FONT LICENSE 1.1 — full text
+--------------------------------------------------------------------------------
+
+The text below is the OFL as shipped upstream with Press Start 2P. The same
+license version applies to Sixtyfour; only the copyright line differs (see §2),
+and Sixtyfour declares no Reserved Font Name.
+
+Copyright 2012 The Press Start 2P Project Authors (cody@zone38.net), with Reserved Font Name "Press Start 2P".
+
+This Font Software is licensed under the SIL Open Font License, Version 1.1.
+This license is copied below, and is also available with a FAQ at:
+http://scripts.sil.org/OFL
+
+
+-----------------------------------------------------------
+SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
+-----------------------------------------------------------
+
+PREAMBLE
+The goals of the Open Font License (OFL) are to stimulate worldwide
+development of collaborative font projects, to support the font creation
+efforts of academic and linguistic communities, and to provide a free and
+open framework in which fonts may be shared and improved in partnership
+with others.
+
+The OFL allows the licensed fonts to be used, studied, modified and
+redistributed freely as long as they are not sold by themselves. The
+fonts, including any derivative works, can be bundled, embedded, 
+redistributed and/or sold with any software provided that any reserved
+names are not used by derivative works. The fonts and derivatives,
+however, cannot be released under any other type of license. The
+requirement for fonts to remain under this license does not apply
+to any document created using the fonts or their derivatives.
+
+DEFINITIONS
+"Font Software" refers to the set of files released by the Copyright
+Holder(s) under this license and clearly marked as such. This may
+include source files, build scripts and documentation.
+
+"Reserved Font Name" refers to any names specified as such after the
+copyright statement(s).
+
+"Original Version" refers to the collection of Font Software components as
+distributed by the Copyright Holder(s).
+
+"Modified Version" refers to any derivative made by adding to, deleting,
+or substituting -- in part or in whole -- any of the components of the
+Original Version, by changing formats or by porting the Font Software to a
+new environment.
+
+"Author" refers to any designer, engineer, programmer, technical
+writer or other person who contributed to the Font Software.
+
+PERMISSION & CONDITIONS
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of the Font Software, to use, study, copy, merge, embed, modify,
+redistribute, and sell modified and unmodified copies of the Font
+Software, subject to the following conditions:
+
+1) Neither the Font Software nor any of its individual components,
+in Original or Modified Versions, may be sold by itself.
+
+2) Original or Modified Versions of the Font Software may be bundled,
+redistributed and/or sold with any software, provided that each copy
+contains the above copyright notice and this license. These can be
+included either as stand-alone text files, human-readable headers or
+in the appropriate machine-readable metadata fields within text or
+binary files as long as those fields can be easily viewed by the user.
+
+3) No Modified Version of the Font Software may use the Reserved Font
+Name(s) unless explicit written permission is granted by the corresponding
+Copyright Holder. This restriction only applies to the primary font name as
+presented to the users.
+
+4) The name(s) of the Copyright Holder(s) or the Author(s) of the Font
+Software shall not be used to promote, endorse or advertise any
+Modified Version, except to acknowledge the contribution(s) of the
+Copyright Holder(s) and the Author(s) or with their explicit written
+permission.
+
+5) The Font Software, modified or unmodified, in part or in whole,
+must be distributed entirely under this license, and must not be
+distributed under any other license. The requirement for fonts to
+remain under this license does not apply to any document created
+using the Font Software.
+
+TERMINATION
+This license becomes null and void if any of the above conditions are
+not met.
+
+DISCLAIMER
+THE FONT SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT
+OF COPYRIGHT, PATENT, TRADEMARK, OR OTHER RIGHT. IN NO EVENT SHALL THE
+COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+INCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL
+DAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM
+OTHER DEALINGS IN THE FONT SOFTWARE.

@@ -1,0 +1,88 @@
+theme = "hugo-theme-c64-boot"
+baseURL = "https://fpgartktic.github.io/"
+locale = "en-us"                    # "languageCode" until Hugo 0.158
+defaultContentLanguage = "en"
+title = "FPGArtktic"
+copyright = "MIT-licensed theme. Not affiliated with Commodore."
+enableRobotsTXT = true
+enableGitInfo = false
+
+[pagination]
+  pagerSize = 8
+
+[markup]
+  [markup.goldmark.renderer]
+    unsafe = true          # existing content uses inline HTML
+  [markup.highlight]
+    noClasses = false
+    lineNos = false
+    tabWidth = 2
+
+[taxonomies]
+  tag = "tags"
+
+[privacy]
+  [privacy.googleAnalytics]
+    respectDoNotTrack = true
+
+[params]
+  description = "A Commodore 64 that has just been switched on."
+  palette = "nice-city"            # day: nice-city | c64 | paper   night: nice-night | oled | scene | green | amber
+  paletteSwitcher = true
+  paletteAuto = true               # follow prefers-color-scheme
+  paletteDark = "nice-night"       # used when paletteAuto and the OS is dark
+  paletteLight = "nice-city"       # used when paletteAuto and the OS is light
+  columns = 80                     # 80 | 40
+  uppercaseChrome = true
+  [params.boot]
+    enabled = true
+    once = "session"               # session | always | never
+    program = "FPGARTKTIC"
+  [params.dir]
+    diskName = "FPGARTKTIC"
+    diskId = "2A"
+    fakeFree = false
+  [params.prompt]
+    enabled = true
+    hotkey = "`"
+  [params.crt]
+    mode = "off"                   # off | subtle | full
+  [params.fonts]
+    body = "pixel"                 # pixel (Press Start 2P) | mono
+    code = "mono"                  # mono | pixel
+    c64pro = false                 # true = site-supplied static/fonts/C64_Pro-STYLE.woff2
+
+[[menu.main]]
+  name = "ABOUT ME"
+  pageRef = "/about"
+  weight = 10
+
+[[menu.main]]
+  name = "PROJECTS"
+  pageRef = "/projects"
+  weight = 20
+
+[[menu.main]]
+  name = "LICENSING"
+  pageRef = "/licensing"
+  weight = 30
+
+[[menu.main]]
+  name = "LINKS"
+  pageRef = "/links"
+  weight = 40
+
+[[menu.main]]
+  name = "SHOWCASE"
+  pageRef = "/showcase"
+  weight = 50
+
+[[menu.main]]
+  name = "POSTS"
+  pageRef = "/posts"
+  weight = 60
+
+[[menu.footer]]
+  name = "LICENSING"
+  url = "/licensing/"
+  weight = 10

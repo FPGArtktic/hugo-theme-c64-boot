@@ -1,0 +1,13 @@
+name = "C64 Boot"
+license = "MIT"
+licenselink = "https://github.com/FPGArtktic/hugo-theme-c64-boot/blob/main/LICENSE"
+description = "A Commodore 64 boot-screen theme: 1541 directory navigation, BASIC-style 404, day/night palettes, no external requests."
+homepage = "https://github.com/FPGArtktic/hugo-theme-c64-boot"
+demosite = "https://fpgartktic.github.io/hugo-theme-c64-boot/"
+tags = ["blog", "personal", "retro", "dark", "light", "minimal", "responsive", "multilingual", "privacy", "no-js-fallback"]
+features = ["boot animation", "404 page", "color schemes", "syntax highlighting", "shortcodes", "rss", "print stylesheet"]
+min_version = "0.146.0"
+
+[author]
+  name = "Mateusz Okulanis"
+  homepage = "https://fpgartktic.github.io/"

@@ -1,0 +1,15 @@
+# Theme-level configuration. A site consuming this theme keeps its own
+# hugo.toml; this file only declares what the theme itself requires.
+
+[module]
+  [module.hugoVersion]
+    extended = true
+    min = "0.146.0"
+
+[markup]
+  [markup.highlight]
+    noClasses = false          # Chroma classes are mapped to palette tokens in 90-syntax.css
+    lineNos = false
+    tabWidth = 2
+  [markup.goldmark.renderer]
+    unsafe = false

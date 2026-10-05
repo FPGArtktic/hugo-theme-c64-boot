@@ -1,0 +1,12 @@
+CLAUDE.md
+
+# Hugo
+/public/
+/resources/_gen/
+/exampleSite/public/
+/exampleSite/resources/_gen/
+.hugo_build.lock
+
+# Dev tooling (never a build dependency — see CLAUDE.md §2.5)
+/node_modules/
+/.lighthouseci/
