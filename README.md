@@ -39,7 +39,7 @@ Checked on every push, on the pinned Hugo:
 | Font integrity (`sha256sum -c fonts.sha256`) | every bundled file pinned |
 | External requests in `public/` | none beyond links written in content |
 | Contrast, all 8 palettes | every meaning-carrying token ≥ 4.5:1 |
-| axe-core, WCAG 2.2 A + AA, 12 pages | 0 violations, normal and reduced motion |
+| axe-core, WCAG 2.2 A + AA, every page of the build | 0 violations, normal and reduced motion |
 | html-validate, stylelint, eslint, prettier | 0 errors |
 | Internal links and fragments | 0 broken |
 | Lighthouse (pull requests) | performance, a11y, best-practices, SEO **100**; CLS **0** |
