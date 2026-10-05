@@ -1,0 +1,7 @@
+# Actions only. This theme has no package manager, and it is not getting one.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly

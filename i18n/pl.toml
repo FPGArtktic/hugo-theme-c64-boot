@@ -1,0 +1,47 @@
+# Komunikaty KERNAL-a i BASIC-a nie sa tlumaczone: READY., LOADING,
+# ?... ERROR i BLOCKS FREE. to glos maszyny, nie interfejsu.
+
+[skip]
+other = "POMIŃ"
+
+[nav]
+other = "Katalog"
+
+[directory]
+other = "Katalog dyskietki"
+
+[prompt]
+other = "Wiersz BASIC-a"
+
+[promptLabel]
+other = "Polecenie BASIC-a"
+
+[promptHint]
+other = "LIST / LOAD\"NAZWA\",8,1 / POKE 53280,n / SYS 64738 — ESC zamyka"
+
+[openPrompt]
+other = "Otwórz wiersz BASIC-a"
+
+[day]
+other = "DZIEŃ"
+
+[night]
+other = "NOC"
+
+[blocks]
+other = "BLOKÓW"
+
+[minutes]
+other = "MIN"
+
+[tags]
+other = "TAGÓW"
+
+[pagination]
+other = "Strony"
+
+[postNav]
+other = "Sąsiednie pliki"
+
+[emptyDir]
+other = "0 BLOCKS FREE."
