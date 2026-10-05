@@ -1,0 +1,33 @@
+{{- $p := partialCached "params.html" . -}}
+{{- /*
+  boot.html — the whole sequence as static markup. boot.js only reveals it,
+  and types the two lines the operator would have typed; data-at is the
+  millisecond it appears (CLAUDE.md 6).
+
+  Without JS, and under prefers-reduced-motion, 60-boot.css keeps the block
+  display:none and the page is simply ready. aria-hidden + inert keep it out
+  of the accessibility tree and the tab order either way; the SKIP link is the
+  one focusable thing in here, and it is a real anchor to #main.
+
+  Two details that are not cosmetic:
+    <pre>  the KERNAL banner is column-aligned, and `hugo --minify` collapses
+           whitespace everywhere except inside pre, textarea, script and style.
+    data-boot-once  not data-once: Go's html/template strips the data- prefix
+           and then treats anything starting with "on" as an event handler, so
+           data-once would be escaped as a JavaScript string literal.
+*/ -}}
+{{- $program := substr $p.boot.program 0 16 -}}
+<pre class="boot" data-boot-once="{{ $p.boot.once }}" aria-hidden="true" inert>
+  <span class="boot__line boot__banner" data-at="0">    **** COMMODORE 64 BASIC V2 ****</span>
+  <span class="boot__line" data-at="0"> </span>
+  <span class="boot__line boot__banner" data-at="0"> 64K RAM SYSTEM  38911 BASIC BYTES FREE</span>
+  <span class="boot__line" data-at="0"> </span>
+  <span class="boot__line boot__ready" data-at="300">READY.<span class="cursor"></span></span>
+  <span class="boot__line" data-at="600" data-type>LOAD"{{ $program }}",8,1</span>
+  <span class="boot__line" data-at="1400"> </span>
+  <span class="boot__line" data-at="1450">SEARCHING FOR {{ $program }}</span>
+  <span class="boot__line boot__ok" data-at="1650">LOADING</span>
+  <span class="boot__line boot__ready" data-at="2300">READY.</span>
+  <span class="boot__line" data-at="2400" data-type>RUN</span>
+</pre>
+<a class="boot__skip" href="#main">[{{ i18n "skip" }}]</a>

@@ -1,0 +1,138 @@
+/*
+ * 60-boot.css — the switch-on.
+ *
+ * Every line of the sequence is in the DOM from the start (boot.html); this
+ * file hides them and boot.js reveals them on a timer. Without JS the whole
+ * block is display:none and the page is simply ready, which is also what
+ * reduced motion gets.
+ */
+
+/*
+ * No boot without JS, and none under reduced motion: .is-booting is set by
+ * boot.js on <html> before the first paint, so the hidden state never flashes.
+ */
+.boot {
+  display: none;
+  margin-block: 0 calc(var(--cell) * 4);
+
+  /* It is a <pre>, so it would otherwise inherit the code face and turn the
+     newlines between the lines into blank rows. Each line keeps its own
+     pre-wrap, which is what preserves the banner's column alignment. */
+  font-family: var(--font-ui);
+  font-size: var(--size-body);
+  line-height: var(--line-tight);
+  white-space: normal;
+}
+
+.boot__line {
+  display: block;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.boot__banner {
+  color: var(--c-bright);
+}
+
+.boot__ok {
+  color: var(--c-ok);
+}
+
+/* The cursor sits after the first READY. until the LOAD line starts typing. */
+.boot:has(.boot__line[data-type].is-shown) .boot__ready .cursor {
+  display: none;
+}
+
+/*
+ * SKIP lives outside the inert boot block so it stays focusable, which means
+ * it also has to be hidden whenever the boot block is.
+ */
+.boot__skip {
+  display: none;
+  margin-block-start: calc(var(--cell) * 2);
+  font-size: var(--size-small);
+}
+
+.is-booting .boot__skip {
+  display: inline-block;
+}
+
+.is-booting .boot {
+  display: block;
+}
+
+.is-booting .boot__line {
+  visibility: hidden;
+}
+
+.is-booting .boot__line.is-shown {
+  visibility: visible;
+}
+
+/* Content is held back only while the machine is still loading. */
+.is-booting .screen__head,
+.is-booting main,
+.is-booting .foot {
+  visibility: hidden;
+}
+
+.is-booted .screen__head,
+.is-booted main,
+.is-booted .foot {
+  animation: boot-print var(--fade) steps(2, end) both;
+}
+
+@keyframes boot-print {
+  from {
+    opacity: 0;
+  }
+}
+
+/*
+ * The fast-loader stripes. A scrolling gradient on the border: smooth
+ * movement, one cycle per second, never a flash. WCAG 2.3.1 holds because
+ * nothing toggles — the pattern translates.
+ */
+.is-loading {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    var(--c64-6) 0 8px,
+    var(--c64-14) 8px 16px,
+    var(--c64-3) 16px 24px,
+    var(--c64-7) 24px 32px,
+    var(--c64-13) 32px 40px
+  );
+  background-size: 100% 40px;
+  animation: loader-scroll 1s linear infinite;
+}
+
+@keyframes loader-scroll {
+  to {
+    background-position-y: 40px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .is-booting .boot {
+    display: none;
+  }
+
+  /* Belt and braces: boot.js never sets .is-booting here, but if it did the
+     page must still be readable. */
+  .is-booting .screen__head,
+  .is-booting main,
+  .is-booting .foot {
+    visibility: visible;
+  }
+
+  .is-loading {
+    background-image: none;
+    animation: none;
+  }
+
+  .is-booted .screen__head,
+  .is-booted main,
+  .is-booted .foot {
+    animation: none;
+  }
+}
