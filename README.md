@@ -1,5 +1,11 @@
 # C64 Boot — a Hugo theme
 
+[![ci](https://github.com/FPGArtktic/hugo-theme-c64-boot/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/FPGArtktic/hugo-theme-c64-boot/actions/workflows/ci.yml)
+[![hugo extended 0.146.0 or newer](https://img.shields.io/badge/hugo-extended%20%E2%89%A5%200.146.0-ff4088?logo=hugo&logoColor=white)](https://gohugo.io/)
+[![licence MIT plus OFL 1.1](https://img.shields.io/badge/licence-MIT%20%2B%20OFL%201.1-8fd3d8)](#licences)
+[![javascript optional](https://img.shields.io/badge/javascript-optional-e3a0d5)](#what-it-does)
+[![no external requests](https://img.shields.io/badge/external%20requests-none-9ad284)](#what-it-does)
+
 A Commodore 64 that has just been switched on. The site *is* the screen,
 navigation *is* the 1541 disk directory, and errors *are* BASIC errors.
 
@@ -12,6 +18,32 @@ self-hosted.
 - **Demo:** <https://fpgartktic.github.io/hugo-theme-c64-boot/>
 - **Hugo:** extended, 0.146.0 or newer (new template layout)
 - **Licence:** theme code MIT, bundled fonts SIL OFL 1.1 — see [Licences](#licences)
+
+## Compatibility
+
+**Hugo extended is required** — the theme builds its CSS and JavaScript with
+Hugo Pipes. Nothing else is: no Go toolchain, no Node, no npm, no Sass.
+
+| Hugo | What CI does with it |
+|---|---|
+| extended **0.146.0** — the declared minimum | built on every push; a break here fails the build |
+| extended **latest** | built on every push, allowed to fail so a new release cannot block a merge |
+
+0.146.0 is the floor because this theme uses the template layout introduced
+there: `layouts/baseof.html`, `layouts/_partials/`, `layouts/_shortcodes/`.
+
+Checked on every push, on the pinned Hugo:
+
+| Check | Result |
+|---|---|
+| Font integrity (`sha256sum -c fonts.sha256`) | every bundled file pinned |
+| External requests in `public/` | none beyond links written in content |
+| Contrast, all 8 palettes | every meaning-carrying token ≥ 4.5:1 |
+| axe-core, WCAG 2.2 A + AA, 12 pages | 0 violations, normal and reduced motion |
+| html-validate, stylelint, eslint, prettier | 0 errors |
+| Internal links and fragments | 0 broken |
+| Lighthouse (pull requests) | performance, a11y, best-practices, SEO **100**; CLS **0** |
+| Home page, transferred | ≈ 42 KB including the font |
 
 ---
 
