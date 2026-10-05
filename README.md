@@ -73,11 +73,55 @@ and `scripts/contrast.py` fails the build if that ever stops being true.
 
 ### Choosing one
 
-`params.palette` pins a palette. `params.paletteAuto = true` (the default)
-follows the operating system instead, using `params.paletteLight` and
-`params.paletteDark`. That switch is pure CSS, so it works with JavaScript
-disabled; a palette the reader picks from the footer is remembered in
-`localStorage` and always wins.
+There are three settings and they stack: what the site ships with, whether it
+follows the reader's operating system, and whether the reader may change it.
+
+**One palette, always.** Pick a name from the tables above:
+
+```toml
+[params]
+  palette = "nice-city"
+  paletteAuto = false
+```
+
+**Follow the reader's operating system.** This is the default. Name the pair:
+
+```toml
+[params]
+  paletteAuto = true
+  paletteLight = "nice-city"
+  paletteDark = "nice-night"
+```
+
+Any of the eight works in either slot — `paletteLight = "c64"` with
+`paletteDark = "amber"` is a perfectly good pair. The switch is pure CSS
+(`prefers-color-scheme`), so it works with JavaScript disabled and costs no
+request. When `paletteAuto` is on, `palette` is ignored.
+
+**Turn the switcher off.** The DAY / NIGHT list in the footer disappears and
+the configured palette is what everyone gets:
+
+```toml
+[params]
+  paletteSwitcher = false
+```
+
+The BASIC prompt can still recolour the screen with `POKE 53280,n` and friends.
+To close that door too, turn the prompt off as well:
+
+```toml
+[params]
+  paletteSwitcher = false
+  [params.prompt]
+    enabled = false
+```
+
+**What the reader's choice does.** A palette picked from the switcher, or a
+`POKE` typed into the prompt, is remembered in `localStorage` and overrides
+everything above on that browser only — it is never sent anywhere and never
+affects another reader. `SYS 64738` in the prompt forgets it and goes back to
+your configuration. Nothing is stored until the reader chooses something, so a
+first visit needs no banner and sets no cookie.
 
 ### Adding one
 
