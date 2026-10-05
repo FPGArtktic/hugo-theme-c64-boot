@@ -1,0 +1,35 @@
+/*
+ * 80-crt.css — optional scanlines and vignette, params.crt.mode.
+ *
+ * Static overlays only: no flicker, no roll, no shake in any mode. The layer
+ * is pointer-transparent and aria-hidden, so it never touches interaction or
+ * the accessibility tree.
+ */
+
+.crt {
+  position: fixed;
+  z-index: 5;
+  inset: 0;
+  pointer-events: none;
+}
+
+:root[data-crt="off"] .crt {
+  display: none;
+}
+
+:root[data-crt="subtle"] .crt {
+  background: repeating-linear-gradient(to bottom, rgb(0 0 0 / 12%) 0 1px, transparent 1px 3px);
+}
+
+:root[data-crt="full"] .crt {
+  background:
+    radial-gradient(ellipse at center, transparent 55%, rgb(0 0 0 / 35%) 100%),
+    repeating-linear-gradient(to bottom, rgb(0 0 0 / 18%) 0 1px, transparent 1px 3px);
+}
+
+/* A scanline grid at 1px pitch is a flicker risk on high-DPI panels. */
+@media (prefers-reduced-motion: reduce), (prefers-contrast: more) {
+  .crt {
+    display: none;
+  }
+}

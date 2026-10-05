@@ -1,0 +1,38 @@
+{{- /*
+  palette-switcher.html — the switcher is a BASIC line, not a swatch grid.
+
+  Each name carries the POKE pair that would set those two registers on the
+  real machine; clicking it applies the palette and prints the line. The two
+  groups are DAY and NIGHT because that is the choice a reader is making.
+
+  Without JS the buttons do nothing, which is why the palette the site
+  configured is already correct on the server side.
+*/ -}}
+{{- $day := slice
+  (dict "name" "nice-city" "poke" "POKE 53280,6 : POKE 53281,6")
+  (dict "name" "c64" "poke" "POKE 53280,14 : POKE 53281,6")
+  (dict "name" "paper" "poke" "POKE 53280,15 : POKE 53281,1")
+-}}
+{{- $night := slice
+  (dict "name" "nice-night" "poke" "POKE 53280,0 : POKE 53281,6")
+  (dict "name" "oled" "poke" "POKE 53280,0 : POKE 53281,0")
+  (dict "name" "scene" "poke" "POKE 53280,6 : POKE 53281,0")
+  (dict "name" "green" "poke" "POKE 53280,0 : POKE 53281,5")
+  (dict "name" "amber" "poke" "POKE 53280,0 : POKE 53281,9")
+-}}
+<div class="palette">
+  {{- range slice (dict "legend" (i18n "day") "items" $day) (dict "legend" (i18n "night") "items" $night) }}
+  <fieldset class="palette__group">
+    <legend class="palette__legend">{{ .legend }}</legend>
+    <ul class="palette__list">
+      {{- range .items }}
+      <li>
+        <button type="button" class="palette__btn" data-palette="{{ .name }}"
+          data-poke="{{ .poke }}" aria-pressed="false">{{ .name }}</button>
+      </li>
+      {{- end }}
+    </ul>
+  </fieldset>
+  {{- end }}
+  <span class="palette__poke" aria-hidden="true">POKE 53280,6 : POKE 53281,6</span>
+</div>

@@ -1,0 +1,6 @@
+{{- /* crt.html — static scanlines and vignette. Decorative, so it is out of
+       the accessibility tree and out of the way of the pointer. The modes
+       live in 80-crt.css, keyed off data-crt on <html>. */ -}}
+{{- if ne . "off" }}
+<div class="crt" aria-hidden="true"></div>
+{{- end }}

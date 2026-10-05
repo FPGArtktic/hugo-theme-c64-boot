@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="READY.">
+  <!--
+    A block cursor on the screen colour, inside the border colour. The style
+    block follows the OS theme on its own, so the icon is right before any
+    script runs. No Commodore logo, no C= glyph.
+  -->
+  <style>
+    :root {
+      --border: #1f1e5c;
+      --screen: #2b2a7f;
+      --bright: #f4f2ff;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --border: #0a0a1a;
+        --screen: #12122b;
+        --bright: #f4f2ff;
+      }
+    }
+  </style>
+  <rect width="32" height="32" fill="var(--border, #1f1e5c)"/>
+  <rect x="2" y="2" width="28" height="28" fill="var(--screen, #2b2a7f)"/>
+  <rect x="11" y="7" width="10" height="18" fill="var(--bright, #f4f2ff)"/>
+</svg>
