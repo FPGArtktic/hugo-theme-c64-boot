@@ -23,7 +23,7 @@ jobs:
         with:
           hugo-version: 0.147.2
           extended: true
-      - uses: actions/configure-pages@v5
+      - uses: actions/configure-pages@v6
         id: pages
       - name: build the demo
         # The demo lives under /hugo-theme-c64-boot/, which is also the test
