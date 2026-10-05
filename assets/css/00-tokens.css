@@ -1,0 +1,413 @@
+/*
+ * 00-tokens.css — the only file in this theme that holds colour values.
+ *
+ * Layout
+ *   1. :root  — the Colodore C64 ramp, one pool per palette, layout tokens.
+ *   2. Mapping blocks — bind a pool to the live --c-* tokens.
+ *
+ * Every palette is bound twice, because the day/night pair is configurable
+ * (params.paletteLight / params.paletteDark) and must work without JS:
+ *   html[data-palette="x"]                      a palette the reader chose
+ *   html:not([data-palette])[data-palette-light="x"]   paletteAuto, OS light
+ *   html:not([data-palette])[data-palette-dark="x"]    paletteAuto, OS dark
+ * The two groups are mutually exclusive, so no specificity contest: a manual
+ * choice always carries data-palette, and that disables both auto selectors.
+ */
+
+:root {
+  /* --- Colodore C64 ramp. Reference values for PETSCII art and POKE. --- */
+  --c64-0: #000000;
+  --c64-1: #ffffff;
+  --c64-2: #813338;
+  --c64-3: #75cec8;
+  --c64-4: #8e3c97;
+  --c64-5: #56ac4d;
+  --c64-6: #2e2c9b;
+  --c64-7: #edf171;
+  --c64-8: #8e5029;
+  --c64-9: #553800;
+  --c64-10: #c46c71;
+  --c64-11: #4a4a4a;
+  --c64-12: #7b7b7b;
+  --c64-13: #a9ff9f;
+  --c64-14: #706deb;
+  --c64-15: #b2b2b2;
+
+  /* --- nice-city (day, default): the site identity, desaturated to AA --- */
+  --p-nice-city-border: #1f1e5c;
+  --p-nice-city-screen: #2b2a7f;
+  --p-nice-city-text: #e3a0d5;
+  --p-nice-city-bright: #f4f2ff;
+  --p-nice-city-dim: #b0a8e6;
+  --p-nice-city-deco: #b0a8e6;
+  --p-nice-city-accent: #8fd3d8;
+  --p-nice-city-accent-2: #e3a0d5;
+  --p-nice-city-ok: #9ad284;
+  --p-nice-city-err: #ff8fa3;
+
+  /* --- c64 (day): the authentic machine. Colodore 14 on 6. --- */
+  --p-c64-border: #706deb;
+  --p-c64-screen: #2e2c9b;
+  --p-c64-text: #b2b2b2;
+  --p-c64-bright: #ffffff;
+  --p-c64-dim: #b9b7ee;
+  --p-c64-deco: #706deb;
+  --p-c64-accent: #75cec8;
+  --p-c64-accent-2: #edf171;
+  --p-c64-ok: #a9ff9f;
+  --p-c64-err: #ffa9b8;
+
+  /* --- paper (day): the printed Programmer's Reference Guide --- */
+  --p-paper-border: #dcd7c8;
+  --p-paper-screen: #f2efe6;
+  --p-paper-text: #2e2c9b;
+  --p-paper-bright: #11102a;
+  --p-paper-dim: #5f5d78;
+  --p-paper-deco: #b9b4a1;
+  --p-paper-accent: #a3267f;
+  --p-paper-accent-2: #4b2a86;
+  --p-paper-ok: #1f5f2a;
+  --p-paper-err: #8c1f2f;
+
+  /* --- nice-night (night, default): the default palette after dark --- */
+  --p-nice-night-border: #0a0a1a;
+  --p-nice-night-screen: #12122b;
+  --p-nice-night-text: #e3a0d5;
+  --p-nice-night-bright: #f4f2ff;
+  --p-nice-night-dim: #8e89bf;
+  --p-nice-night-deco: #8e89bf;
+  --p-nice-night-accent: #8fd3d8;
+  --p-nice-night-accent-2: #e3a0d5;
+  --p-nice-night-ok: #9ad284;
+  --p-nice-night-err: #ff8fa3;
+
+  /* --- oled (night): POKE 53280,0 : POKE 53281,0 : POKE 646,15 --- */
+  --p-oled-border: #000000;
+  --p-oled-screen: #000000;
+  --p-oled-text: #b2b2b2;
+  --p-oled-bright: #ffffff;
+  --p-oled-dim: #8a8a8a;
+  --p-oled-deco: #4a4a4a;
+  --p-oled-accent: #75cec8;
+  --p-oled-accent-2: #edf171;
+  --p-oled-ok: #a9ff9f;
+  --p-oled-err: #ff8fa3;
+
+  /* --- scene (night): POKE 53280,6 : POKE 53281,0 --- */
+  --p-scene-border: #2e2c9b;
+  --p-scene-screen: #000000;
+  --p-scene-text: #8f8cf0;
+  --p-scene-bright: #ffffff;
+  --p-scene-dim: #706deb;
+  --p-scene-deco: #2e2c9b;
+  --p-scene-accent: #edf171;
+  --p-scene-accent-2: #75cec8;
+  --p-scene-ok: #a9ff9f;
+  --p-scene-err: #ff8fa3;
+
+  /* --- green (night): monochrome P1 phosphor --- */
+  --p-green-border: #061008;
+  --p-green-screen: #0b1a0f;
+  --p-green-text: #5df28a;
+  --p-green-bright: #d9ffe6;
+  --p-green-dim: #3fa862;
+  --p-green-deco: #3fa862;
+  --p-green-accent: #b8ffcf;
+  --p-green-accent-2: #8ef2a8;
+  --p-green-ok: #9bffb8;
+  --p-green-err: #ffb3b3;
+
+  /* --- amber (night): monochrome P3 phosphor --- */
+  --p-amber-border: #0e0a03;
+  --p-amber-screen: #1a1206;
+  --p-amber-text: #ffb347;
+  --p-amber-bright: #fff0d6;
+  --p-amber-dim: #b87d2e;
+  --p-amber-deco: #b87d2e;
+  --p-amber-accent: #ffe0b0;
+  --p-amber-accent-2: #ffd98a;
+  --p-amber-ok: #d9e08a;
+  --p-amber-err: #ff9d6b;
+
+  /* --- Typography. The glyph cell is 8x8, so sizes are multiples of 8px. --- */
+  --font-pixel: "Press Start 2P", ui-monospace, monospace;
+  --font-mono: "JetBrains Mono", ui-monospace, "Courier New", monospace;
+  --font-petscii: "Sixtyfour", "Press Start 2P", monospace;
+  --font-ui: var(--font-pixel);
+  --font-code: var(--font-mono);
+
+  --cell: 0.5rem; /* 8px at the default root size */
+  --size-body: 1rem; /* 16px — two cells */
+  --size-small: 0.75rem; /* 12px, metadata only */
+  --size-h1: clamp(1rem, 4.5vw, 2rem);
+  --size-h2: clamp(1rem, 3.5vw, 1.5rem);
+  --size-h3: 1rem;
+  --line: 1.9; /* a pixel face needs air */
+  --line-tight: 1.4;
+
+  /* --- Screen geometry (see CLAUDE.md 5) --- */
+  --border-w: clamp(0.75rem, 4vw, 3rem);
+  --columns: 80;
+  --measure: 72ch;
+  --gutter: 1rem;
+
+  /* --- Motion. 1.6 Hz cursor: one full cycle per 625 ms, well under 3 Hz. --- */
+  --blink-period: 625ms;
+  --type-step: 40ms;
+  --fade: 120ms;
+}
+
+/* 40-column mode: the real C64 width, and the better phone layout. */
+:root[data-columns="40"] {
+  --measure: 38ch;
+}
+
+/* params.fonts.body = "mono" — readable mode, same geometry. */
+:root[data-font-body="mono"] {
+  --font-ui: var(--font-mono);
+}
+
+/* params.fonts.code = "pixel" */
+:root[data-font-code="pixel"] {
+  --font-code: var(--font-pixel);
+}
+
+/*
+ * params.fonts.c64pro — the site supplies C64_Pro-STYLE.woff2 in its own
+ * static/fonts/. Press Start 2P stays in the stack: C64 Pro has no Polish
+ * diacritics. The @font-face itself lives in 25-c64pro.css, which head.html
+ * only adds to the bundle when the param is on, so a site that did not opt in
+ * never requests a file it does not have.
+ */
+:root[data-c64pro] {
+  --font-pixel: "C64 Pro", "Press Start 2P", ui-monospace, monospace;
+}
+
+/* --- Mapping: pool -> live tokens. ------------------------------------- */
+
+:root[data-palette="nice-city"],
+:root:not([data-palette])[data-palette-light="nice-city"] {
+  --c-border: var(--p-nice-city-border);
+  --c-screen: var(--p-nice-city-screen);
+  --c-text: var(--p-nice-city-text);
+  --c-bright: var(--p-nice-city-bright);
+  --c-dim: var(--p-nice-city-dim);
+  --c-deco: var(--p-nice-city-deco);
+  --c-accent: var(--p-nice-city-accent);
+  --c-accent-2: var(--p-nice-city-accent-2);
+  --c-ok: var(--p-nice-city-ok);
+  --c-err: var(--p-nice-city-err);
+}
+
+:root[data-palette="c64"],
+:root:not([data-palette])[data-palette-light="c64"] {
+  --c-border: var(--p-c64-border);
+  --c-screen: var(--p-c64-screen);
+  --c-text: var(--p-c64-text);
+  --c-bright: var(--p-c64-bright);
+  --c-dim: var(--p-c64-dim);
+  --c-deco: var(--p-c64-deco);
+  --c-accent: var(--p-c64-accent);
+  --c-accent-2: var(--p-c64-accent-2);
+  --c-ok: var(--p-c64-ok);
+  --c-err: var(--p-c64-err);
+}
+
+:root[data-palette="paper"],
+:root:not([data-palette])[data-palette-light="paper"] {
+  --c-border: var(--p-paper-border);
+  --c-screen: var(--p-paper-screen);
+  --c-text: var(--p-paper-text);
+  --c-bright: var(--p-paper-bright);
+  --c-dim: var(--p-paper-dim);
+  --c-deco: var(--p-paper-deco);
+  --c-accent: var(--p-paper-accent);
+  --c-accent-2: var(--p-paper-accent-2);
+  --c-ok: var(--p-paper-ok);
+  --c-err: var(--p-paper-err);
+}
+
+:root[data-palette="nice-night"],
+:root:not([data-palette])[data-palette-light="nice-night"] {
+  --c-border: var(--p-nice-night-border);
+  --c-screen: var(--p-nice-night-screen);
+  --c-text: var(--p-nice-night-text);
+  --c-bright: var(--p-nice-night-bright);
+  --c-dim: var(--p-nice-night-dim);
+  --c-deco: var(--p-nice-night-deco);
+  --c-accent: var(--p-nice-night-accent);
+  --c-accent-2: var(--p-nice-night-accent-2);
+  --c-ok: var(--p-nice-night-ok);
+  --c-err: var(--p-nice-night-err);
+}
+
+:root[data-palette="oled"],
+:root:not([data-palette])[data-palette-light="oled"] {
+  --c-border: var(--p-oled-border);
+  --c-screen: var(--p-oled-screen);
+  --c-text: var(--p-oled-text);
+  --c-bright: var(--p-oled-bright);
+  --c-dim: var(--p-oled-dim);
+  --c-deco: var(--p-oled-deco);
+  --c-accent: var(--p-oled-accent);
+  --c-accent-2: var(--p-oled-accent-2);
+  --c-ok: var(--p-oled-ok);
+  --c-err: var(--p-oled-err);
+}
+
+:root[data-palette="scene"],
+:root:not([data-palette])[data-palette-light="scene"] {
+  --c-border: var(--p-scene-border);
+  --c-screen: var(--p-scene-screen);
+  --c-text: var(--p-scene-text);
+  --c-bright: var(--p-scene-bright);
+  --c-dim: var(--p-scene-dim);
+  --c-deco: var(--p-scene-deco);
+  --c-accent: var(--p-scene-accent);
+  --c-accent-2: var(--p-scene-accent-2);
+  --c-ok: var(--p-scene-ok);
+  --c-err: var(--p-scene-err);
+}
+
+:root[data-palette="green"],
+:root:not([data-palette])[data-palette-light="green"] {
+  --c-border: var(--p-green-border);
+  --c-screen: var(--p-green-screen);
+  --c-text: var(--p-green-text);
+  --c-bright: var(--p-green-bright);
+  --c-dim: var(--p-green-dim);
+  --c-deco: var(--p-green-deco);
+  --c-accent: var(--p-green-accent);
+  --c-accent-2: var(--p-green-accent-2);
+  --c-ok: var(--p-green-ok);
+  --c-err: var(--p-green-err);
+}
+
+:root[data-palette="amber"],
+:root:not([data-palette])[data-palette-light="amber"] {
+  --c-border: var(--p-amber-border);
+  --c-screen: var(--p-amber-screen);
+  --c-text: var(--p-amber-text);
+  --c-bright: var(--p-amber-bright);
+  --c-dim: var(--p-amber-dim);
+  --c-deco: var(--p-amber-deco);
+  --c-accent: var(--p-amber-accent);
+  --c-accent-2: var(--p-amber-accent-2);
+  --c-ok: var(--p-amber-ok);
+  --c-err: var(--p-amber-err);
+}
+
+/* paletteAuto and the OS asks for dark. A manual choice disables all of this. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-palette])[data-palette-dark="nice-city"] {
+    --c-border: var(--p-nice-city-border);
+    --c-screen: var(--p-nice-city-screen);
+    --c-text: var(--p-nice-city-text);
+    --c-bright: var(--p-nice-city-bright);
+    --c-dim: var(--p-nice-city-dim);
+    --c-deco: var(--p-nice-city-deco);
+    --c-accent: var(--p-nice-city-accent);
+    --c-accent-2: var(--p-nice-city-accent-2);
+    --c-ok: var(--p-nice-city-ok);
+    --c-err: var(--p-nice-city-err);
+  }
+
+  :root:not([data-palette])[data-palette-dark="c64"] {
+    --c-border: var(--p-c64-border);
+    --c-screen: var(--p-c64-screen);
+    --c-text: var(--p-c64-text);
+    --c-bright: var(--p-c64-bright);
+    --c-dim: var(--p-c64-dim);
+    --c-deco: var(--p-c64-deco);
+    --c-accent: var(--p-c64-accent);
+    --c-accent-2: var(--p-c64-accent-2);
+    --c-ok: var(--p-c64-ok);
+    --c-err: var(--p-c64-err);
+  }
+
+  :root:not([data-palette])[data-palette-dark="paper"] {
+    --c-border: var(--p-paper-border);
+    --c-screen: var(--p-paper-screen);
+    --c-text: var(--p-paper-text);
+    --c-bright: var(--p-paper-bright);
+    --c-dim: var(--p-paper-dim);
+    --c-deco: var(--p-paper-deco);
+    --c-accent: var(--p-paper-accent);
+    --c-accent-2: var(--p-paper-accent-2);
+    --c-ok: var(--p-paper-ok);
+    --c-err: var(--p-paper-err);
+  }
+
+  :root:not([data-palette])[data-palette-dark="nice-night"] {
+    --c-border: var(--p-nice-night-border);
+    --c-screen: var(--p-nice-night-screen);
+    --c-text: var(--p-nice-night-text);
+    --c-bright: var(--p-nice-night-bright);
+    --c-dim: var(--p-nice-night-dim);
+    --c-deco: var(--p-nice-night-deco);
+    --c-accent: var(--p-nice-night-accent);
+    --c-accent-2: var(--p-nice-night-accent-2);
+    --c-ok: var(--p-nice-night-ok);
+    --c-err: var(--p-nice-night-err);
+  }
+
+  :root:not([data-palette])[data-palette-dark="oled"] {
+    --c-border: var(--p-oled-border);
+    --c-screen: var(--p-oled-screen);
+    --c-text: var(--p-oled-text);
+    --c-bright: var(--p-oled-bright);
+    --c-dim: var(--p-oled-dim);
+    --c-deco: var(--p-oled-deco);
+    --c-accent: var(--p-oled-accent);
+    --c-accent-2: var(--p-oled-accent-2);
+    --c-ok: var(--p-oled-ok);
+    --c-err: var(--p-oled-err);
+  }
+
+  :root:not([data-palette])[data-palette-dark="scene"] {
+    --c-border: var(--p-scene-border);
+    --c-screen: var(--p-scene-screen);
+    --c-text: var(--p-scene-text);
+    --c-bright: var(--p-scene-bright);
+    --c-dim: var(--p-scene-dim);
+    --c-deco: var(--p-scene-deco);
+    --c-accent: var(--p-scene-accent);
+    --c-accent-2: var(--p-scene-accent-2);
+    --c-ok: var(--p-scene-ok);
+    --c-err: var(--p-scene-err);
+  }
+
+  :root:not([data-palette])[data-palette-dark="green"] {
+    --c-border: var(--p-green-border);
+    --c-screen: var(--p-green-screen);
+    --c-text: var(--p-green-text);
+    --c-bright: var(--p-green-bright);
+    --c-dim: var(--p-green-dim);
+    --c-deco: var(--p-green-deco);
+    --c-accent: var(--p-green-accent);
+    --c-accent-2: var(--p-green-accent-2);
+    --c-ok: var(--p-green-ok);
+    --c-err: var(--p-green-err);
+  }
+
+  :root:not([data-palette])[data-palette-dark="amber"] {
+    --c-border: var(--p-amber-border);
+    --c-screen: var(--p-amber-screen);
+    --c-text: var(--p-amber-text);
+    --c-bright: var(--p-amber-bright);
+    --c-dim: var(--p-amber-dim);
+    --c-deco: var(--p-amber-deco);
+    --c-accent: var(--p-amber-accent);
+    --c-accent-2: var(--p-amber-accent-2);
+    --c-ok: var(--p-amber-ok);
+    --c-err: var(--p-amber-err);
+  }
+}
+
+/*
+ * POKE 53280 / 53281 / 646 set these three from the C64 ramp at runtime
+ * (prompt.js, palette.js). They are last so they win over any palette.
+ */
+:root[style*="--poke-border"] {
+  --c-border: var(--poke-border, var(--c-border));
+}

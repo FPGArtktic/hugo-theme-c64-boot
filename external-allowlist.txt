@@ -1,0 +1,11 @@
+# Hosts that may appear in the built site. Anything else fails `make guard`.
+#
+# These are links written in content, never requests the theme makes: the
+# theme itself fetches nothing from off-origin at runtime. Add a host here
+# only when a page genuinely links to it.
+fpgartktic.github.io
+github.com/FPGArtktic
+gohugo.io
+colodore.com
+style64.org
+example.org

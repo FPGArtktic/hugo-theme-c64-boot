@@ -1,0 +1,188 @@
+/*
+ * 30-screen.css — the machine: border register 53280 outside, screen
+ * register 53281 inside, 80 (or 40) columns of text between them.
+ * Sharp corners everywhere: a CRT mask is not a rounded rectangle.
+ */
+
+body {
+  min-block-size: 100vh;
+  padding: var(--border-w);
+  background: var(--c-border);
+}
+
+.screen {
+  position: relative;
+  display: flex;
+  min-block-size: calc(100vh - var(--border-w) * 2);
+  flex-direction: column;
+  padding: calc(var(--cell) * 4) var(--gutter);
+  background: var(--c-screen);
+}
+
+.screen__inner {
+  inline-size: 100%;
+  max-inline-size: var(--measure);
+  margin-inline: auto;
+}
+
+main {
+  flex: 1 1 auto;
+}
+
+/* Keyboard users land here first. */
+.skip {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.skip:focus {
+  position: fixed;
+  z-index: 10;
+  inset-block-start: var(--border-w);
+  inset-inline-start: var(--border-w);
+  inline-size: auto;
+  block-size: auto;
+  margin: 0;
+  padding: var(--cell) calc(var(--cell) * 2);
+  clip-path: none;
+  color: var(--c-screen);
+  background: var(--c-bright);
+}
+
+/*
+ * The block cursor. Press Start 2P has no U+2588, so the cursor is a box with
+ * a background — which also survives every font fallback.
+ */
+.cursor {
+  display: inline-block;
+  inline-size: 1ch;
+  block-size: 1em;
+  margin-block-end: -0.15em;
+  background: var(--c-bright);
+  animation: cursor-blink var(--blink-period) steps(2, jump-none) infinite;
+}
+
+@keyframes cursor-blink {
+  to {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cursor {
+    animation: none;
+  }
+}
+
+/* Header: the READY. prompt above the directory. */
+.screen__head {
+  margin-block-end: calc(var(--cell) * 4);
+}
+
+.ready {
+  color: var(--c-bright);
+}
+
+.load-line {
+  color: var(--c-text);
+  overflow-wrap: anywhere;
+}
+
+/* Footer: BLOCKS FREE. / READY. / cursor, exactly as the drive leaves it. */
+.foot {
+  margin-block-start: calc(var(--cell) * 6);
+  color: var(--c-dim);
+  font-size: var(--size-small);
+}
+
+.foot__blocks {
+  color: var(--c-text);
+}
+
+.foot__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 2ch;
+  margin-block: calc(var(--cell) * 2);
+  padding: 0;
+  list-style: none;
+}
+
+.foot__links li::before {
+  content: none;
+}
+
+/*
+ * Rules are drawn, not typed: the pixel face has no box-drawing glyphs.
+ * A 2px bar with a 4px dash reads as the PETSCII line it stands in for.
+ */
+hr,
+.hr {
+  block-size: 2px;
+  margin-block: calc(var(--cell) * 4);
+  border: 0;
+  background: repeating-linear-gradient(to right, var(--c-dim) 0 6px, transparent 6px 8px);
+}
+
+.hr--solid {
+  background: var(--c-dim);
+}
+
+/* A 2px PETSCII-style frame for figures that ask for one. */
+.framed {
+  padding: var(--cell);
+  border: 2px solid var(--c-dim);
+}
+
+/* 40 columns on a phone, as on the real machine. */
+@media (width <= 480px) {
+  :root {
+    --measure: 38ch;
+    --size-body: 1rem;
+  }
+
+  .screen {
+    padding-inline: var(--cell);
+  }
+}
+
+/*
+ * Page navigation reads as a screen clear. No JS; browsers without the API
+ * simply navigate, and reduced motion opts out below.
+ */
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root) {
+  animation: screen-clear var(--fade) steps(1, end) both;
+}
+
+::view-transition-new(root) {
+  animation: screen-print var(--fade) steps(2, end) both;
+}
+
+@keyframes screen-clear {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes screen-print {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+  }
+}

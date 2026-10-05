@@ -1,0 +1,91 @@
+/* 10-reset.css — just enough normalisation. No framework reset. */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:where(h1, h2, h3, h4, p, ul, ol, dl, pre, figure, blockquote) {
+  margin-block: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scrollbar-color: var(--c-text) var(--c-screen);
+  scrollbar-width: thin;
+}
+
+body {
+  margin: 0;
+}
+
+img,
+svg,
+video,
+canvas {
+  display: block;
+  max-inline-size: 100%;
+  block-size: auto;
+}
+
+/* The pixel grid only survives on images that ask for it. */
+img.pixel {
+  image-rendering: pixelated;
+}
+
+input,
+button,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  caret-color: var(--c-text);
+  accent-color: var(--c-accent);
+}
+
+button {
+  cursor: pointer;
+}
+
+table {
+  border-collapse: collapse;
+  inline-size: 100%;
+}
+
+::selection {
+  /* C64 reverse video: RVS ON. */
+  color: var(--c-screen);
+  background: var(--c-text);
+}
+
+:focus-visible {
+  outline: 2px solid var(--c-bright);
+  outline-offset: 2px;
+}
+
+::-webkit-scrollbar {
+  inline-size: 0.75rem;
+  block-size: 0.75rem;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--c-screen);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--c-text);
+  border-radius: 0;
+}
+
+/*
+ * There is deliberately no blanket prefers-reduced-motion override here. That
+ * pattern needs !important, which this theme does not use, and it is only
+ * needed when a stylesheet animates things it has not accounted for. Every
+ * animation in this theme is opted out where it is defined: the cursor in
+ * 30-screen.css, the boot sequence and loader stripes in 60-boot.css, the
+ * view transition in 30-screen.css, the CRT overlay in 80-crt.css.
+ */

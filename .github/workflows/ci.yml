@@ -1,0 +1,124 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+env:
+  HUGO_PIN: 0.147.2
+
+jobs:
+  build:
+    name: build (hugo ${{ matrix.hugo }})
+    runs-on: ubuntu-latest
+    continue-on-error: ${{ matrix.experimental }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # The floor the theme declares, and the ceiling it has to survive.
+          - hugo: 0.146.0
+            experimental: false
+          - hugo: latest
+            experimental: true
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: ${{ matrix.hugo }}
+          extended: true
+      - name: build exampleSite
+        run: hugo --source exampleSite --themesDir ../.. --gc --minify --panicOnWarning
+
+  guard:
+    name: integrity and origin
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: ${{ env.HUGO_PIN }}
+          extended: true
+      - name: font integrity
+        run: sha256sum -c fonts.sha256
+      - name: contrast (WCAG AA in every palette)
+        run: python3 scripts/contrast.py
+      - name: no external requests
+        run: make guard
+
+  lint:
+    name: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: ${{ env.HUGO_PIN }}
+          extended: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: build exampleSite
+        run: hugo --source exampleSite --themesDir ../.. --gc --minify --panicOnWarning
+      # Fetched on demand: nothing is installed into the repository, and the
+      # build job above never sees Node at all.
+      - name: stylelint
+        run: npx --yes stylelint "assets/css/*.css"
+      - name: eslint
+        run: npx --yes eslint assets/js --no-warn-ignored
+      - name: prettier
+        run: npx --yes prettier --check "assets/js/**/*.js" "assets/css/*.css" "*.json" "*.mjs"
+      - name: html-validate
+        run: npx --yes html-validate "exampleSite/public/**/*.html"
+      - name: links
+        run: npx --yes lychee --offline --no-progress "exampleSite/public/**/*.html"
+
+  a11y:
+    name: axe
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: ${{ env.HUGO_PIN }}
+          extended: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: build exampleSite
+        run: hugo --source exampleSite --themesDir ../.. --gc --minify --baseURL http://localhost:8080/
+      - name: serve
+        run: npx --yes http-server exampleSite/public -p 8080 --silent &
+      - name: wait for the server
+        run: npx --yes wait-on http://localhost:8080/ --timeout 60000
+      - name: axe every page
+        run: |
+          set -e
+          for page in / /about/ /projects/ /licensing/ /links/ /showcase/ /posts/ \
+                      /posts/hello-world/ /tags/ /404.html; do
+            echo "axe http://localhost:8080$page"
+            npx --yes @axe-core/cli "http://localhost:8080$page" --exit
+          done
+
+  lighthouse:
+    name: lighthouse
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: ${{ env.HUGO_PIN }}
+          extended: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: build exampleSite
+        run: hugo --source exampleSite --themesDir ../.. --gc --minify --baseURL http://localhost:8080/
+      - name: lighthouse ci
+        run: npx --yes @lhci/cli autorun

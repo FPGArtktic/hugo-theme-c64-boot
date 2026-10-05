@@ -1,0 +1,11 @@
+public/
+exampleSite/public/
+resources/
+static/fonts/
+assets/fonts/
+images/
+*.woff2
+*.ttf
+# Hugo templates are Go templates, not HTML documents: Prettier reflows the
+# {{ }} actions and breaks whitespace control.
+layouts/

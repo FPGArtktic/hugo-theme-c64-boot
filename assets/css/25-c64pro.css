@@ -1,0 +1,16 @@
+/*
+ * 25-c64pro.css — only in the bundle when params.fonts.c64pro is true.
+ *
+ * The file itself is the SITE's: it must sit in the site's own
+ * static/fonts/C64_Pro-STYLE.woff2, unmodified and under that exact
+ * filename, and must never be fingerprinted or subset. See LICENSE-FONT.txt
+ * section 3 for the Style64 terms this puts on the site.
+ */
+
+@font-face {
+  font-family: "C64 Pro";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../fonts/C64_Pro-STYLE.woff2") format("woff2");
+}
