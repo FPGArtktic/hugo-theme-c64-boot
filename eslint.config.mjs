@@ -11,6 +11,24 @@ export default [
     ignores: ['public/**', 'exampleSite/public/**', 'resources/**'],
   },
   {
+    // Dev scripts run on Node, not in the page.
+    files: ['scripts/**/*.mjs', 'eslint.config.mjs'],
+    languageOptions: {
+      ecmaVersion: 2022,
+      sourceType: 'module',
+      globals: { process: 'readonly', console: 'readonly', URL: 'readonly' },
+    },
+    rules: {
+      'no-console': 'off',
+      'no-await-in-loop': 'off',
+      'no-undef': 'error',
+      'no-unused-vars': 'error',
+      'prefer-const': 'error',
+      'no-var': 'error',
+      eqeqeq: ['error', 'always', { null: 'ignore' }],
+    },
+  },
+  {
     files: ['assets/js/**/*.js'],
     languageOptions: {
       ecmaVersion: 2022,

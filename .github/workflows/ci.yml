@@ -70,13 +70,13 @@ jobs:
       - name: stylelint
         run: npx --yes stylelint "assets/css/*.css"
       - name: eslint
-        run: npx --yes eslint assets/js --no-warn-ignored
+        run: npx --yes eslint assets/js scripts --no-warn-ignored
       - name: prettier
-        run: npx --yes prettier --check "assets/js/**/*.js" "assets/css/*.css" "*.json" "*.mjs"
+        run: npx --yes prettier --check "assets/js/**/*.js" "scripts/*.mjs" "assets/css/*.css" "*.json" "*.mjs"
       - name: html-validate
         run: npx --yes html-validate "exampleSite/public/**/*.html"
-      - name: links
-        run: npx --yes lychee --offline --no-progress "exampleSite/public/**/*.html"
+      - name: internal links
+        run: python3 scripts/links.py exampleSite/public
 
   a11y:
     name: axe
@@ -91,19 +91,20 @@ jobs:
         with:
           node-version: 22
       - name: build exampleSite
-        run: hugo --source exampleSite --themesDir ../.. --gc --minify --baseURL http://localhost:8080/
-      - name: serve
-        run: npx --yes http-server exampleSite/public -p 8080 --silent &
-      - name: wait for the server
-        run: npx --yes wait-on http://localhost:8080/ --timeout 60000
-      - name: axe every page
+        run: hugo --source exampleSite --themesDir ../.. --gc --minify --panicOnWarning
+      # Installed outside the checkout: scripts/axe.mjs serves the site itself
+      # and resolves these through AXE_MODULES, so nothing lands in the repo.
+      - name: install the browser driver
         run: |
-          set -e
-          for page in / /about/ /projects/ /licensing/ /links/ /showcase/ /posts/ \
-                      /posts/hello-world/ /tags/ /404.html; do
-            echo "axe http://localhost:8080$page"
-            npx --yes @axe-core/cli "http://localhost:8080$page" --exit
-          done
+          npm install --prefix "$RUNNER_TEMP/axe" --no-fund --no-audit \
+            playwright @axe-core/playwright
+          npx --prefix "$RUNNER_TEMP/axe" playwright install --with-deps chromium
+      - name: axe every page
+        env:
+          AXE_MODULES: ${{ runner.temp }}/axe/node_modules
+        run: |
+          node scripts/axe.mjs exampleSite/public
+          node scripts/axe.mjs exampleSite/public --reduced-motion
 
   lighthouse:
     name: lighthouse
