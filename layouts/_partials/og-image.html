@@ -9,6 +9,7 @@
   subset — see LICENSE-FONT.txt). Using a font to render static images is
   explicitly permitted.
 */ -}}
+{{- $card := false -}}
 {{- $base := resources.Get "images/og-base.png" -}}
 {{- $font := resources.Get "fonts/PressStart2P-Regular.ttf" -}}
 {{- if and $base $font -}}
@@ -51,6 +52,6 @@
         "y" 510
         "font" $font
       )) -}}
-  {{- return $img.Resize "1200x630 png" -}}
+  {{- $card = $img.Resize "1200x630 png" -}}
 {{- end -}}
-{{- return false -}}
+{{- return $card -}}

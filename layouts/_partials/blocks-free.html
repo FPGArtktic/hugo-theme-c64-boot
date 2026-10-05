@@ -3,15 +3,17 @@
   disk. Subtract what this site actually stores and return the line.
   params.dir.fakeFree = true keeps the pristine 664 instead.
 */ -}}
+{{- /* One `return`, at the top level, as the last statement — see og-image.html
+       for why an early return nested in an {{ if }} breaks on Hugo 0.146. */ -}}
 {{- $p := partialCached "params.html" . -}}
-{{- if $p.dir.fakeFree -}}
-  {{- return "664 BLOCKS FREE." -}}
+{{- $free := 664 -}}
+{{- if not $p.dir.fakeFree -}}
+  {{- $used := 0 -}}
+  {{- range site.RegularPages -}}
+    {{- $blocks := math.Ceil (div (len .RawContent | float) 254.0) | int -}}
+    {{- $used = add $used (cond (lt $blocks 1) 1 $blocks) -}}
+  {{- end -}}
+  {{- $free = sub 664 $used -}}
+  {{- if lt $free 0 }}{{ $free = 0 }}{{ end -}}
 {{- end -}}
-{{- $used := 0 -}}
-{{- range site.RegularPages -}}
-  {{- $blocks := math.Ceil (div (len .RawContent | float) 254.0) | int -}}
-  {{- $used = add $used (cond (lt $blocks 1) 1 $blocks) -}}
-{{- end -}}
-{{- $free := sub 664 $used -}}
-{{- if lt $free 0 }}{{ $free = 0 }}{{ end -}}
 {{- return printf "%d BLOCKS FREE." $free -}}
