@@ -1,0 +1,123 @@
+/*
+ * 40-dir.css — LOAD"$",8 : LIST
+ *
+ * The directory is the navigation and the post index. One line per entry,
+ * the whole line is the link, and hover is reverse video of the whole line —
+ * the only selection the 1541 ever showed.
+ */
+
+.dir {
+  margin-block: calc(var(--cell) * 4);
+  font-size: var(--size-body);
+  line-height: var(--line-tight);
+}
+
+.dir__head,
+.dir__free {
+  color: var(--c-bright);
+}
+
+.dir__list {
+  margin-block: calc(var(--cell) * 2);
+  padding: 0;
+  list-style: none;
+}
+
+.dir__list > li::before {
+  content: none;
+}
+
+/*
+ * The real listing pads the name to a fixed field and then prints the type,
+ * so the type column sits just after the name rather than at the far edge of
+ * the screen. The trailing 1fr is empty: it exists so the reverse-video hover
+ * covers the whole line, as it did on the machine.
+ */
+.dir__entry {
+  display: grid;
+  gap: 0 1ch;
+  grid-template-columns: 4ch minmax(0, 20ch) 4ch minmax(0, 1fr);
+  padding-block: calc(var(--cell) / 2);
+  color: var(--c-text);
+  text-decoration: none;
+}
+
+.dir__entry:hover,
+.dir__entry:focus-visible,
+.dir__entry[aria-current="page"],
+.dir__entry.is-cursor {
+  color: var(--c-screen);
+  background: var(--c-text);
+}
+
+.dir__entry:hover .dir__blocks,
+.dir__entry:focus-visible .dir__blocks,
+.dir__entry.is-cursor .dir__blocks,
+.dir__entry:hover .dir__type,
+.dir__entry:focus-visible .dir__type,
+.dir__entry.is-cursor .dir__type,
+.dir__entry:hover .dir__date,
+.dir__entry:focus-visible .dir__date,
+.dir__entry.is-cursor .dir__date {
+  color: inherit;
+}
+
+.dir__blocks {
+  color: var(--c-dim);
+  text-align: end;
+  font-variant-numeric: tabular-nums;
+}
+
+.dir__name::before {
+  content: "\0022";
+}
+
+.dir__name::after {
+  content: "\0022";
+}
+
+.dir__type {
+  color: var(--c-dim);
+}
+
+.dir__date {
+  color: var(--c-dim);
+  font-size: var(--size-small);
+}
+
+/* Drafts only ever appear on `hugo server`. */
+.dir__entry--del .dir__name {
+  color: var(--c-err);
+}
+
+/* 40 columns cannot hold the date column; stack it under the name. */
+@media (width <= 480px) {
+  .dir__entry {
+    grid-template-columns: 4ch minmax(0, 1fr);
+  }
+
+  .dir__type,
+  .dir__date {
+    grid-column: 2;
+  }
+}
+
+/* Pagination in BASIC: LIST 1-8 / LIST 9-16 / LIST 17- */
+.pager {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 2ch;
+  margin-block-start: calc(var(--cell) * 4);
+  padding: 0;
+  list-style: none;
+}
+
+.pager li::before {
+  content: none;
+}
+
+.pager__item[aria-current="page"] {
+  color: var(--c-screen);
+  background: var(--c-bright);
+  text-decoration: none;
+}

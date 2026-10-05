@@ -1,0 +1,19 @@
+{{ define "main" }}
+  <header class="post__head">
+    <h1 class="post__title">{{ .Title }}</h1>
+    {{- with .Content }}
+    <div class="post__body">{{ . }}</div>
+    {{- end }}
+  </header>
+  {{- $pages := .Pages -}}
+  {{- if .Paginator }}{{ $pages = .Paginator.Pages }}{{ end -}}
+  {{- if $pages }}
+    {{- partial "dir.html" (dict
+        "entries" (partial "dir-entries.html" (dict "pages" $pages "current" .))
+        "label" false
+        "free" false) }}
+    {{- partial "pagination.html" . }}
+  {{- else }}
+  <p>{{ i18n "emptyDir" }}</p>
+  {{- end }}
+{{ end }}

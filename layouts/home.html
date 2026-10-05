@@ -1,0 +1,15 @@
+{{ define "main" }}
+  {{- with .Content }}
+  <div class="post__body">{{ . }}</div>
+  {{- end }}
+  {{- /* On the home page the directory IS the navigation, so it carries the
+         landmark and the menu entries come first, as the system files would
+         on a real disk. BLOCKS FREE is left to the footer, one line below. */ -}}
+  {{- $entries := partial "menu-entries.html" . -}}
+  {{- $pages := where site.RegularPages "Section" "!=" "" -}}
+  {{- $entries = $entries | append (partial "dir-entries.html" (dict "pages" (first 20 $pages) "current" .)) -}}
+  {{- partial "dir.html" (dict
+      "entries" $entries
+      "label" (i18n "directory")
+      "free" (partialCached "blocks-free.html" .)) }}
+{{ end }}

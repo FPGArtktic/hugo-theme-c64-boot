@@ -1,0 +1,23 @@
+{{- /*
+  pagination.html — pages are BASIC line ranges: LIST 1-8, LIST 9-16, LIST 17-.
+  The last page has no upper bound, exactly as LIST would print it.
+*/ -}}
+{{- $pager := .Paginator -}}
+{{- if gt $pager.TotalPages 1 }}
+<nav aria-label="{{ i18n "pagination" }}">
+  <ul class="pager">
+    {{- range $pager.Pagers }}
+      {{- $from := add (mul (sub .PageNumber 1) .PageSize) 1 -}}
+      {{- $to := math.Min .TotalNumberOfElements (mul .PageNumber .PageSize) | int -}}
+      {{- $label := cond (eq .PageNumber $pager.TotalPages) (printf "LIST %d-" $from) (printf "LIST %d-%d" $from $to) -}}
+    <li>
+      {{- if eq .PageNumber $pager.PageNumber }}
+      <span class="pager__item" aria-current="page">{{ $label }}</span>
+      {{- else }}
+      <a class="pager__item" href="{{ .URL }}">{{ $label }}</a>
+      {{- end }}
+    </li>
+    {{- end }}
+  </ul>
+</nav>
+{{- end }}

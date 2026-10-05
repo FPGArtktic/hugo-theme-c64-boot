@@ -1,0 +1,31 @@
+{{- /*
+  menu-entries.html — menu.main as directory entries, and return the slice.
+
+  A menu entry that resolves to a page gets that page's real block count;
+  one that is only a URL (an external link, or a page this site does not own)
+  gets a single block, because that is what a one-line SEQ file costs.
+*/ -}}
+{{- $current := . -}}
+{{- $entries := slice -}}
+{{- range site.Menus.main -}}
+  {{- $page := .Page -}}
+  {{- if and (not $page) .URL -}}
+    {{- $page = site.GetPage .URL -}}
+  {{- end -}}
+  {{- $blocks := 1 -}}
+  {{- with $page -}}
+    {{- $blocks = math.Ceil (div (len .RawContent | float) 254.0) | int -}}
+    {{- if lt $blocks 1 }}{{ $blocks = 1 }}{{ end -}}
+  {{- end -}}
+  {{- $url := .URL -}}
+  {{- with $page }}{{ $url = .RelPermalink }}{{ end -}}
+  {{- $entries = $entries | append (dict
+      "name" (upper (substr .Name 0 16))
+      "url" $url
+      "blocks" $blocks
+      "type" "PRG"
+      "date" false
+      "current" (and $page $current (eq $page.RelPermalink $current.RelPermalink))
+    ) -}}
+{{- end -}}
+{{- return $entries -}}

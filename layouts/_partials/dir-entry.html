@@ -1,0 +1,23 @@
+{{- /*
+  dir-entry.html — one 1541 directory line. The same partial renders menu
+  entries and post lists, which is the point of the format.
+
+  Context: a dict with
+    name    16-character filename, already upper-cased
+    url     where the line goes
+    blocks  real block count, 254 data bytes each
+    type    PRG | SEQ | REL | DEL
+    date    optional time.Time, shown for SEQ files
+    current true when this is the page being read
+*/ -}}
+<li>
+  <a class="dir__entry{{ if eq .type "DEL" }} dir__entry--del{{ end }}" href="{{ .url }}"
+    {{- if .current }} aria-current="page"{{ end }}>
+    <span class="dir__blocks">{{ .blocks }}</span>
+    <span class="dir__name">{{ .name }}</span>
+    <span class="dir__type">{{ .type }}</span>
+    {{- with .date }}
+    <time class="dir__date" datetime="{{ .Format "2006-01-02" }}">{{ .Format "2006-01-02" }}</time>
+    {{- end }}
+  </a>
+</li>

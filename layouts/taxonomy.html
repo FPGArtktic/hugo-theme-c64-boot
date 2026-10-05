@@ -1,0 +1,31 @@
+{{ define "main" }}
+  <header class="post__head">
+    <h1 class="post__title">{{ .Title }}</h1>
+    {{- with .Content }}
+    <div class="post__body">{{ . }}</div>
+    {{- end }}
+  </header>
+  {{- /* Terms are relative files: one REL entry per term, with the number of
+         1541 blocks the pages behind it actually occupy. */ -}}
+  {{- $entries := slice -}}
+  {{- range .Pages -}}
+    {{- $blocks := 0 -}}
+    {{- range .Pages -}}
+      {{- $b := math.Ceil (div (len .RawContent | float) 254.0) | int -}}
+      {{- $blocks = add $blocks (cond (lt $b 1) 1 $b) -}}
+    {{- end -}}
+    {{- $entries = $entries | append (dict
+        "name" (upper (substr (or .LinkTitle .Title) 0 16))
+        "url" .RelPermalink
+        "blocks" (cond (lt $blocks 1) 1 $blocks)
+        "type" "REL"
+        "date" false
+        "current" false
+      ) -}}
+  {{- end -}}
+  {{- if $entries }}
+    {{- partial "dir.html" (dict "entries" $entries "label" false "free" false) }}
+  {{- else }}
+  <p>{{ i18n "emptyDir" }}</p>
+  {{- end }}
+{{ end }}

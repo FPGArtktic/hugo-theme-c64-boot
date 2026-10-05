@@ -1,0 +1,23 @@
+{{- /*
+  header.html — the prompt the reader would have typed to get here, then the
+  menu as a disk directory.
+
+  On the home page the directory in <main> already is the navigation, so the
+  header does not print a second one.
+*/ -}}
+<header class="screen__head">
+  <p class="ready">READY.</p>
+  <p class="load-line">
+    {{- if .IsHome -}}
+      LOAD&quot;$&quot;,8
+    {{- else -}}
+      LOAD&quot;{{ upper (substr (or .LinkTitle .Title) 0 16) }}&quot;,8,1
+    {{- end -}}
+  </p>
+  {{- if not .IsHome }}
+    {{- partial "dir.html" (dict
+        "entries" (partial "menu-entries.html" .)
+        "label" (i18n "nav")
+        "free" false) }}
+  {{- end }}
+</header>

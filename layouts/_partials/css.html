@@ -1,0 +1,42 @@
+{{- /*
+  css.html — Hugo Pipes only: get, concat in filename order, minify,
+  fingerprint. No Sass, no PostCSS, no npm.
+
+  The bundle is published at css/, one level deep, so the relative font
+  url()s in 20-typography.css resolve to /fonts/ even when the site lives
+  under a baseURL subpath.
+*/ -}}
+{{- $p := partialCached "params.html" . -}}
+{{- $files := slice
+  "css/00-tokens.css"
+  "css/10-reset.css"
+  "css/20-typography.css"
+-}}
+{{- if $p.fonts.c64pro -}}
+  {{- $files = $files | append "css/25-c64pro.css" -}}
+{{- end -}}
+{{- $files = $files | append
+  "css/30-screen.css"
+  "css/40-dir.css"
+  "css/50-post.css"
+  "css/60-boot.css"
+  "css/70-prompt.css"
+  "css/80-crt.css"
+  "css/90-syntax.css"
+  "css/95-print.css"
+-}}
+{{- $res := slice -}}
+{{- range $files -}}
+  {{- with resources.Get . -}}
+    {{- $res = $res | append . -}}
+  {{- else -}}
+    {{- errorf "css.html: missing stylesheet %q" . -}}
+  {{- end -}}
+{{- end -}}
+{{- $bundle := $res | resources.Concat "css/c64.css" -}}
+{{- if hugo.IsProduction -}}
+  {{- $bundle = $bundle | minify | fingerprint "sha256" -}}
+<link rel="stylesheet" href="{{ $bundle.RelPermalink }}" integrity="{{ $bundle.Data.Integrity }}">
+{{- else -}}
+<link rel="stylesheet" href="{{ $bundle.RelPermalink }}">
+{{- end -}}

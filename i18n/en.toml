@@ -1,0 +1,47 @@
+# KERNAL and BASIC messages are never translated: READY., LOADING,
+# ?... ERROR and BLOCKS FREE. are what the machine says, not UI copy.
+
+[skip]
+other = "SKIP"
+
+[nav]
+other = "Directory"
+
+[directory]
+other = "Disk directory"
+
+[prompt]
+other = "BASIC prompt"
+
+[promptLabel]
+other = "BASIC command"
+
+[promptHint]
+other = "LIST / LOAD\"NAME\",8,1 / POKE 53280,n / SYS 64738 — ESC closes"
+
+[openPrompt]
+other = "Open the BASIC prompt"
+
+[day]
+other = "DAY"
+
+[night]
+other = "NIGHT"
+
+[blocks]
+other = "BLOCKS"
+
+[minutes]
+other = "MIN"
+
+[tags]
+other = "TAGS"
+
+[pagination]
+other = "Pages"
+
+[postNav]
+other = "Neighbouring files"
+
+[emptyDir]
+other = "0 BLOCKS FREE."

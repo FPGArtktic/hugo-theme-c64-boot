@@ -1,0 +1,58 @@
+{{- /*
+  params.html — resolve every theme param once, with its documented default,
+  and return the result as a dict. Called with partialCached, so the work
+  happens once per build.
+
+  `default` is deliberately not used on booleans: `false | default true` is
+  true, which would make every opt-out impossible. isset is the only safe test.
+*/ -}}
+{{- $boot := site.Params.boot | default dict -}}
+{{- $dir := site.Params.dir | default dict -}}
+{{- $prompt := site.Params.prompt | default dict -}}
+{{- $crt := site.Params.crt | default dict -}}
+{{- $fonts := site.Params.fonts | default dict -}}
+
+{{- $bootEnabled := true -}}
+{{- if isset $boot "enabled" }}{{ $bootEnabled = $boot.enabled }}{{ end -}}
+{{- $promptEnabled := true -}}
+{{- if isset $prompt "enabled" }}{{ $promptEnabled = $prompt.enabled }}{{ end -}}
+{{- $switcher := true -}}
+{{- if isset site.Params "paletteswitcher" }}{{ $switcher = site.Params.paletteSwitcher }}{{ end -}}
+{{- $auto := true -}}
+{{- if isset site.Params "paletteauto" }}{{ $auto = site.Params.paletteAuto }}{{ end -}}
+{{- $uppercase := true -}}
+{{- if isset site.Params "uppercasechrome" }}{{ $uppercase = site.Params.uppercaseChrome }}{{ end -}}
+{{- $fakeFree := false -}}
+{{- if isset $dir "fakefree" }}{{ $fakeFree = $dir.fakeFree }}{{ end -}}
+{{- $c64pro := false -}}
+{{- if isset $fonts "c64pro" }}{{ $c64pro = $fonts.c64pro }}{{ end -}}
+
+{{- return dict
+  "palette" (site.Params.palette | default "nice-city")
+  "paletteSwitcher" $switcher
+  "paletteAuto" $auto
+  "paletteDark" (site.Params.paletteDark | default "nice-night")
+  "paletteLight" (site.Params.paletteLight | default "nice-city")
+  "columns" (site.Params.columns | default 80 | int)
+  "uppercaseChrome" $uppercase
+  "boot" (dict
+    "enabled" $bootEnabled
+    "once" ($boot.once | default "session")
+    "program" (upper ($boot.program | default site.Title))
+  )
+  "dir" (dict
+    "diskName" (upper ($dir.diskName | default site.Title))
+    "diskId" (upper ($dir.diskId | default "2A"))
+    "fakeFree" $fakeFree
+  )
+  "prompt" (dict
+    "enabled" $promptEnabled
+    "hotkey" ($prompt.hotkey | default "`")
+  )
+  "crt" (dict "mode" ($crt.mode | default "off"))
+  "fonts" (dict
+    "body" ($fonts.body | default "pixel")
+    "code" ($fonts.code | default "mono")
+    "c64pro" $c64pro
+  )
+-}}

@@ -1,0 +1,39 @@
+{{- /*
+  dir.html — a whole LOAD"$",8 : LIST listing.
+
+  Context: a dict with
+    entries  slice of dir-entry dicts
+    label    accessible name for the <nav>, or false for a plain listing
+    free     "664 BLOCKS FREE." line, or false to leave it to the footer
+
+  The header line is the real format: block count, 16-padded disk name in
+  quotes, two-character disk ID, then the 2A DOS version.
+*/ -}}
+{{- $p := partialCached "params.html" . -}}
+{{- /* The 16-character padding is the format, so it must survive
+       `hugo --minify`: non-breaking spaces are the only spaces it keeps
+       outside a <pre>. The disk name comes from the site's own config. */ -}}
+{{- $name := printf "%-16s" (substr $p.dir.diskName 0 16) | replaceRE " " "&nbsp;" | safeHTML -}}
+{{- $head := printf "0 &quot;%s&quot; %s 2A" $name $p.dir.diskId -}}
+{{- if eq .label false }}
+<div class="dir">
+  <p class="dir__head">{{ $head | safeHTML }}</p>
+  {{- template "dir-body" . }}
+</div>
+{{- else }}
+<nav class="dir" aria-label="{{ .label }}">
+  <p class="dir__head">{{ $head | safeHTML }}</p>
+  {{- template "dir-body" . }}
+</nav>
+{{- end }}
+
+{{- define "dir-body" }}
+  <ul class="dir__list">
+    {{- range .entries }}
+      {{- partial "dir-entry.html" . }}
+    {{- end }}
+  </ul>
+  {{- with .free }}
+  <p class="dir__free">{{ . }}</p>
+  {{- end }}
+{{- end }}

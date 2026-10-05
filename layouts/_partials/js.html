@@ -1,0 +1,20 @@
+{{- /*
+  js.html — one ES2020 module, bundled by the esbuild that ships inside Hugo
+  extended. No npm, no transpiling down, no polyfills: every feature here is
+  progressive enhancement, so an old browser simply gets the static page.
+*/ -}}
+{{- with resources.Get "js/main.js" -}}
+  {{- $opts := dict
+      "target" "es2020"
+      "format" "esm"
+      "minify" hugo.IsProduction
+      "sourceMap" (cond hugo.IsProduction "" "inline")
+  -}}
+  {{- $js := . | js.Build $opts -}}
+  {{- if hugo.IsProduction -}}
+    {{- $js = $js | fingerprint "sha256" -}}
+<script type="module" src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}" defer></script>
+  {{- else -}}
+<script type="module" src="{{ $js.RelPermalink }}" defer></script>
+  {{- end -}}
+{{- end -}}

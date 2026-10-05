@@ -1,0 +1,19 @@
+{{- /*
+  alias.html — Hugo's own alias stub is a bare <html> with a meta refresh and
+  no body, which is neither valid nor usable if the redirect does not fire.
+  This one says where it is going and gives the reader a link.
+*/ -}}
+<!doctype html>
+<html lang="{{ or site.Language.Lang "en" }}">
+<head>
+  <meta charset="utf-8">
+  <title>LOADING</title>
+  <link rel="canonical" href="{{ .Permalink }}">
+  <meta name="robots" content="noindex">
+  <meta http-equiv="refresh" content="0; url={{ .Permalink }}">
+</head>
+<body>
+  <p>SEARCHING FOR {{ upper (path.Base .Permalink) }}</p>
+  <p>LOADING <a href="{{ .Permalink }}">{{ .Permalink }}</a></p>
+</body>
+</html>

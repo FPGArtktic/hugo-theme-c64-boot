@@ -1,0 +1,145 @@
+/* 50-post.css — the article itself. Prose keeps mixed case; chrome does not. */
+
+.post__head {
+  margin-block-end: calc(var(--cell) * 4);
+}
+
+.post__title {
+  margin-block-end: calc(var(--cell) * 2);
+}
+
+.post__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 2ch;
+  color: var(--c-dim);
+  font-size: var(--size-small);
+}
+
+.post__body {
+  overflow-wrap: break-word;
+}
+
+.post__body :is(h2, h3, h4) {
+  margin-block-start: calc(var(--cell) * 6);
+  margin-block-end: calc(var(--cell) * 2);
+}
+
+/* Heading anchors, visible on hover and on keyboard focus. */
+.post__body :is(h2, h3, h4) > .anchor {
+  margin-inline-start: 1ch;
+  color: var(--c-dim);
+  opacity: 0;
+  text-decoration: none;
+}
+
+.post__body :is(h2, h3, h4):hover > .anchor,
+.post__body .anchor:focus-visible {
+  opacity: 1;
+}
+
+.post__body img {
+  margin-block: calc(var(--cell) * 4);
+}
+
+.post__body figure {
+  margin-inline: 0;
+}
+
+.post__body figcaption {
+  color: var(--c-dim);
+  font-size: var(--size-small);
+}
+
+.post__body :is(th, td) {
+  padding: calc(var(--cell)) 1ch;
+  border: 2px solid var(--c-dim);
+  text-align: start;
+}
+
+.post__body th {
+  color: var(--c-bright);
+}
+
+.post__body table {
+  display: block;
+  overflow-x: auto;
+}
+
+/* Taxonomy chips, printed as a BASIC string list. */
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--cell) 1ch;
+  margin-block: calc(var(--cell) * 4);
+  padding: 0;
+  list-style: none;
+}
+
+.tags li::before {
+  content: none;
+}
+
+.tags a {
+  color: var(--c-accent-2);
+  text-decoration: none;
+}
+
+.tags a::before {
+  content: "[";
+}
+
+.tags a::after {
+  content: "]";
+}
+
+/* Prev / next, as the drive would phrase it. */
+.post__nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: calc(var(--cell) * 2) 2ch;
+  margin-block-start: calc(var(--cell) * 6);
+  font-size: var(--size-small);
+}
+
+/*
+ * Scoped to prose: the boot block is also a <pre> (it has to be, to keep its
+ * columns through `hugo --minify`), and PETSCII art brings its own box.
+ */
+.post__body pre:not(.petscii) {
+  padding: calc(var(--cell) * 2);
+  overflow-x: auto;
+  border-inline-start: 2px solid var(--c-dim);
+  background: color-mix(in srgb, var(--c-text) 10%, transparent);
+  line-height: 1.6;
+  tab-size: 2;
+}
+
+/* BASIC listings from the {{< basic >}} shortcode. */
+.basic {
+  counter-reset: none;
+}
+
+.basic__line {
+  display: block;
+  white-space: pre-wrap;
+}
+
+.basic__no {
+  display: inline-block;
+  min-inline-size: 5ch;
+  color: var(--c-dim);
+}
+
+.basic__kw {
+  color: var(--c-bright);
+}
+
+.basic__str {
+  color: var(--c-ok);
+}
+
+.basic__rem {
+  color: var(--c-dim);
+}

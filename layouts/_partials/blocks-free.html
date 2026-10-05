@@ -1,0 +1,17 @@
+{{- /*
+  blocks-free.html — 664 is the free-block count of a freshly formatted 1541
+  disk. Subtract what this site actually stores and return the line.
+  params.dir.fakeFree = true keeps the pristine 664 instead.
+*/ -}}
+{{- $p := partialCached "params.html" . -}}
+{{- if $p.dir.fakeFree -}}
+  {{- return "664 BLOCKS FREE." -}}
+{{- end -}}
+{{- $used := 0 -}}
+{{- range site.RegularPages -}}
+  {{- $blocks := math.Ceil (div (len .RawContent | float) 254.0) | int -}}
+  {{- $used = add $used (cond (lt $blocks 1) 1 $blocks) -}}
+{{- end -}}
+{{- $free := sub 664 $used -}}
+{{- if lt $free 0 }}{{ $free = 0 }}{{ end -}}
+{{- return printf "%d BLOCKS FREE." $free -}}

@@ -1,0 +1,16 @@
+{{- /*
+  post-meta.html — the file, as the drive would describe it: when it was
+  written, how many 254-byte blocks it occupies, how long it takes to read.
+*/ -}}
+{{- $blocks := math.Ceil (div (len .RawContent | float) 254.0) | int -}}
+{{- if lt $blocks 1 }}{{ $blocks = 1 }}{{ end -}}
+<p class="post__meta">
+  {{- with .Date }}
+  <time datetime="{{ .Format "2006-01-02" }}">{{ .Format "2006-01-02" }}</time>
+  {{- end }}
+  <span>{{ $blocks }} {{ i18n "blocks" }}</span>
+  <span>{{ .ReadingTime }} {{ i18n "minutes" }}</span>
+  {{- with .Params.tags }}
+  <span>{{ len . }} {{ i18n "tags" }}</span>
+  {{- end }}
+</p>

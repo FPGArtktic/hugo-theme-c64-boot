@@ -1,0 +1,28 @@
+{{ define "main" }}
+<article class="post">
+  <header class="post__head">
+    <h1 class="post__title">{{ .Title }}</h1>
+    {{- partial "post-meta.html" . }}
+  </header>
+  <div class="post__body">
+    {{- .Content }}
+  </div>
+  {{- with .Params.tags }}
+  <ul class="tags">
+    {{- range . }}
+    <li><a href="{{ (site.GetPage (printf "/tags/%s" (urlize .))).RelPermalink | default (printf "/tags/%s/" (urlize .)) }}">{{ . }}</a></li>
+    {{- end }}
+  </ul>
+  {{- end }}
+  {{- if or .PrevInSection .NextInSection }}
+  <nav class="post__nav" aria-label="{{ i18n "postNav" }}">
+    {{- with .PrevInSection }}
+    <a href="{{ .RelPermalink }}">&larr; LOAD&quot;{{ upper (substr (or .LinkTitle .Title) 0 16) }}&quot;</a>
+    {{- end }}
+    {{- with .NextInSection }}
+    <a href="{{ .RelPermalink }}">LOAD&quot;{{ upper (substr (or .LinkTitle .Title) 0 16) }}&quot; &rarr;</a>
+    {{- end }}
+  </nav>
+  {{- end }}
+</article>
+{{ end }}

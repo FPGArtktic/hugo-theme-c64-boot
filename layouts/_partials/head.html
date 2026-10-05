@@ -1,0 +1,75 @@
+{{- $p := partialCached "params.html" . -}}
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+{{- /* Title: upper-cased, Hugo-rendered, authoritative. tab.js only borrows
+       it while the machine is busy or the tab is in the background (15.1). */ -}}
+{{- $title := printf "%s · %s" (upper .Title) (upper site.Title) -}}
+{{- if .IsHome }}{{ $title = printf "%s · READY." (upper site.Title) }}{{ end -}}
+{{- /* Two spaces before ERROR is how the KERNAL prints it. They are U+00A0,
+       because `hugo --minify` collapses runs of ASCII whitespace in <title>
+       and safeHTML has no business anywhere near a page title. */ -}}
+{{- if eq .Kind "404" }}{{ $title = "?FILE NOT FOUND  ERROR" }}{{ end -}}
+<title>{{ $title }}</title>
+
+{{- with or .Description site.Params.description }}
+<meta name="description" content="{{ . }}">
+{{- end }}
+{{- with .Params.author | default site.Params.author }}
+<meta name="author" content="{{ . }}">
+{{- end }}
+{{- if .Params.private }}
+<meta name="robots" content="noindex">
+{{- end }}
+<link rel="canonical" href="{{ .Permalink }}">
+
+{{- /* The browser chrome takes the C64 border colour, so the frame carries on
+       past the page. A manual palette choice rewrites these in palette.js. */ -}}
+{{- $light := index (dict
+      "nice-city" "#1f1e5c" "c64" "#706deb" "paper" "#dcd7c8"
+      "nice-night" "#0a0a1a" "oled" "#000000" "scene" "#2e2c9b"
+      "green" "#061008" "amber" "#0e0a03")
+      (cond $p.paletteAuto $p.paletteLight $p.palette) -}}
+{{- $dark := index (dict
+      "nice-city" "#1f1e5c" "c64" "#706deb" "paper" "#dcd7c8"
+      "nice-night" "#0a0a1a" "oled" "#000000" "scene" "#2e2c9b"
+      "green" "#061008" "amber" "#0e0a03")
+      (cond $p.paletteAuto $p.paletteDark $p.palette) -}}
+{{- if $p.paletteAuto }}
+<meta name="theme-color" content="{{ $light }}" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="{{ $dark }}" media="(prefers-color-scheme: dark)">
+{{- else }}
+<meta name="theme-color" content="{{ $light }}">
+{{- end }}
+
+<link rel="icon" href="{{ "favicon.svg" | relURL }}" type="image/svg+xml" data-dynamic>
+<link rel="alternate icon" href="{{ "icon-48.png" | relURL }}" sizes="48x48" type="image/png">
+<link rel="apple-touch-icon" href="{{ "apple-touch-icon.png" | relURL }}">
+
+{{- /* Restore a saved palette before the first stylesheet, which is the only
+       way to beat the first paint. palette.js does everything else. */ -}}
+<script>
+  try {
+    var d = document.documentElement, p = localStorage.getItem("palette");
+    if (p) { d.setAttribute("data-palette", p); }
+    var k = (localStorage.getItem("poke") || "").split(",");
+    [["--c-border", k[0]], ["--c-screen", k[1]], ["--c-text", k[2]]].forEach(function (e) {
+      var n = parseInt(e[1], 10);
+      if (n >= 0 && n <= 15) { d.style.setProperty(e[0], "var(--c64-" + n + ")"); }
+    });
+  } catch (e) { /* storage blocked: the configured palette stands */ }
+</script>
+
+{{- /* Fonts are preloaded so the first paint has the right metrics and CLS
+       stays at 0. Only the body face: the code and PETSCII faces are used by
+       selectors that most pages never reach. */ -}}
+<link rel="preload" href="{{ "fonts/PressStart2P-Regular.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
+
+{{- partialCached "css.html" . }}
+{{- partialCached "js.html" . }}
+
+{{- with .OutputFormats.Get "rss" }}
+<link rel="alternate" type="{{ .MediaType.Type }}" href="{{ .Permalink }}" title="{{ site.Title }}">
+{{- end }}
+
+{{- partial "og.html" . }}

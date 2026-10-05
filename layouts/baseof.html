@@ -1,0 +1,39 @@
+{{- $p := partialCached "params.html" . -}}
+<!doctype html>
+{{- /* .Lang is the one spelling that has survived every Hugo release;
+       .LanguageCode is deprecated from 0.158 and .Locale does not exist
+       before it, so neither is safe across the supported range. */ -}}
+<html lang="{{ or site.Language.Lang "en" }}"
+  {{- /* A fixed palette is written here so a reader without JS still gets the
+         configured one. With paletteAuto the choice is left to CSS, which
+         needs both names and no data-palette — see 00-tokens.css. */ -}}
+  {{- if $p.paletteAuto }} data-palette-light="{{ $p.paletteLight }}" data-palette-dark="{{ $p.paletteDark }}"
+  {{- else }} data-palette="{{ $p.palette }}"{{ end }}
+  {{- if eq $p.columns 40 }} data-columns="40"{{ end }}
+  {{- if $p.uppercaseChrome }} data-uppercase-chrome{{ end }}
+  {{- if $p.fonts.c64pro }} data-c64pro{{ end }}
+  data-font-body="{{ $p.fonts.body }}" data-font-code="{{ $p.fonts.code }}"
+  data-crt="{{ $p.crt.mode }}">
+<head>
+  {{- partial "head.html" . }}
+</head>
+<body>
+  <a class="skip" href="#main">{{ i18n "skip" }}</a>
+  {{- partialCached "crt.html" $p.crt.mode $p.crt.mode }}
+  <div class="screen">
+    <div class="screen__inner">
+      {{- if and $p.boot.enabled .IsHome }}
+        {{- partial "boot.html" . }}
+      {{- end }}
+      {{- partial "header.html" . }}
+      <main id="main">
+        {{- block "main" . }}{{ end }}
+      </main>
+      {{- partial "footer.html" . }}
+    </div>
+  </div>
+  {{- if $p.prompt.enabled }}
+    {{- partial "prompt.html" . }}
+  {{- end }}
+</body>
+</html>
