@@ -42,23 +42,16 @@
   text-decoration: none;
 }
 
-.dir__entry:hover,
-.dir__entry:focus-visible,
-.dir__entry[aria-current="page"],
-.dir__entry.is-cursor {
+/* RVS ON over the whole line, for hover, focus, the keyboard cursor and the
+   page being read. The dim columns have to come with it: --c-dim on
+   --c-text is nowhere near 4.5:1. */
+.dir__entry:is(:hover, :focus-visible, [aria-current="page"], .is-cursor) {
   color: var(--c-screen);
   background: var(--c-text);
 }
 
-.dir__entry:hover .dir__blocks,
-.dir__entry:focus-visible .dir__blocks,
-.dir__entry.is-cursor .dir__blocks,
-.dir__entry:hover .dir__type,
-.dir__entry:focus-visible .dir__type,
-.dir__entry.is-cursor .dir__type,
-.dir__entry:hover .dir__date,
-.dir__entry:focus-visible .dir__date,
-.dir__entry.is-cursor .dir__date {
+.dir__entry:is(:hover, :focus-visible, [aria-current="page"], .is-cursor)
+  :is(.dir__blocks, .dir__type, .dir__date) {
   color: inherit;
 }
 

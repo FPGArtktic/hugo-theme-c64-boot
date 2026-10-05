@@ -126,20 +126,34 @@ small,
   color: var(--c-dim);
 }
 
-code,
-kbd,
-samp,
-pre {
+/* Code blocks get the mono face, where real code needs the narrower column. */
+pre,
+pre code {
   font-family: var(--font-code);
   font-size: 0.875em;
 }
 
-:not(pre) > code {
-  padding: 0 0.25em;
-  color: var(--c-bright);
-  background: color-mix(in srgb, var(--c-text) 14%, transparent);
+/*
+ * Inline literals stay on the 8x8 grid instead. A C64 had one character set,
+ * and a second typeface halfway through a sentence reads as a foreign object
+ * pasted in — which is exactly what a config key like params.fonts.c64pro
+ * looked like in a grey box. Brightness marks it instead, the way the machine
+ * would have.
+ */
+:not(pre) > code,
+kbd,
+samp {
+  font-family: var(--font-ui);
+  font-size: 1em;
+  overflow-wrap: anywhere;
 }
 
+:not(pre) > code,
+samp {
+  color: var(--c-bright);
+}
+
+/* A key cap is reverse video, which is how the machine showed a pressed key. */
 kbd {
   padding: 0 0.3em;
   color: var(--c-screen);
