@@ -1,0 +1,6 @@
+{{- /*
+  hr.html — the PETSCII rule, drawn in CSS because the pixel face has no
+  box-drawing glyphs. {{< hr >}} for the dashed rule, {{< hr solid="true" >}}
+  for the unbroken one.
+*/ -}}
+<hr class="hr{{ if eq (.Get "solid") "true" }} hr--solid{{ end }}">

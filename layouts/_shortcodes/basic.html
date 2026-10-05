@@ -1,0 +1,34 @@
+{{- /*
+  basic.html — a BASIC listing with line numbers.
+
+      {{< basic >}}
+      10 PRINT "HELLO"
+      20 GOTO 10
+      {{< /basic >}}
+
+  The line number is split out so it can sit in its own column, and keywords
+  and strings get the two colours a listing on a C64 ever had. The inner text
+  is escaped by the template, so a listing can contain anything.
+*/ -}}
+{{- $keywords := `(?i)\b(PRINT|GOTO|GOSUB|RETURN|IF|THEN|ELSE|FOR|TO|STEP|NEXT|POKE|PEEK|SYS|LOAD|SAVE|RUN|LIST|NEW|END|STOP|INPUT|GET|DATA|READ|DIM|LET|REM|AND|OR|NOT|CHR\$|RND|LEN|VAL|STR\$|ASC|TAB|SPC|OPEN|CLOSE|CLR|CONT|DEF|FN|ON|WAIT|VERIFY)\b` -}}
+<pre class="basic"><code>{{- range (.Inner | strings.TrimSpace | split "\n") -}}
+{{- $line := . | strings.TrimRight "\r" -}}
+{{- $m := findRESubmatch `^(\s*)(\d+)(\s*)(.*)$` $line 1 -}}
+<span class="basic__line">
+{{- if $m -}}
+  {{- $parts := index $m 0 -}}
+  <span class="basic__no">{{ index $parts 2 }}</span>
+  {{- $code := index $parts 4 -}}
+  {{- if hasPrefix (upper (strings.TrimSpace $code)) "REM" -}}
+    <span class="basic__rem">{{ $code }}</span>
+  {{- else -}}
+    {{- $code = $code | replaceRE `"([^"]*)"` `<span class="basic__str">&#34;$1&#34;</span>` -}}
+    {{- $code = $code | replaceRE $keywords `<span class="basic__kw">$1</span>` -}}
+    {{- $code | safeHTML -}}
+  {{- end -}}
+{{- else -}}
+  {{- $line -}}
+{{- end -}}
+</span>
+{{- end -}}
+</code></pre>

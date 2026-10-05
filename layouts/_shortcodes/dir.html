@@ -1,0 +1,37 @@
+{{- /*
+  dir.html — a directory listing written by hand, for pages that want to show
+  files this site does not have.
+
+      {{< dir >}}
+      12  DEMO       PRG
+      3   NOTES      SEQ
+      {{< /dir >}}
+
+  Three whitespace-separated columns: blocks, name, type. Anything else on the
+  line is kept as a trailing comment column.
+*/ -}}
+{{- $entries := slice -}}
+{{- range (.Inner | strings.TrimSpace | split "\n") -}}
+  {{- $cols := . | strings.TrimSpace | split `  ` -}}
+  {{- $cols = where (apply $cols "strings.TrimSpace" ".") "!=" "" -}}
+  {{- if ge (len $cols) 2 -}}
+    {{- $entries = $entries | append (dict
+        "blocks" (index $cols 0)
+        "name" (upper (index $cols 1))
+        "type" (cond (ge (len $cols) 3) (upper (index $cols 2)) "PRG")
+      ) -}}
+  {{- end -}}
+{{- end -}}
+<div class="dir">
+  <ul class="dir__list">
+    {{- range $entries }}
+    <li>
+      <span class="dir__entry">
+        <span class="dir__blocks">{{ .blocks }}</span>
+        <span class="dir__name">{{ .name }}</span>
+        <span class="dir__type">{{ .type }}</span>
+      </span>
+    </li>
+    {{- end }}
+  </ul>
+</div>

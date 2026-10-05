@@ -1,0 +1,80 @@
+/*
+ * 90-syntax.css — Chroma classes on palette tokens.
+ *
+ * markup.highlight.noClasses = false in hugo.toml, so highlighting follows
+ * the active palette instead of baking one theme's colours into the HTML.
+ * Four roles only: keyword, string, comment, number. A C64 listing had no
+ * more colours than that, and every one of them clears AA.
+ */
+
+.chroma {
+  color: var(--c-text);
+  background: color-mix(in srgb, var(--c-text) 10%, transparent);
+}
+
+/* Keyword, builtin, operator, declaration, type. */
+.chroma :is(.k, .kc, .kd, .kn, .kp, .kr, .kt, .nb, .nt, .o, .ow) {
+  color: var(--c-bright);
+}
+
+/* Name, function, class, variable. */
+.chroma :is(.n, .na, .nc, .nd, .nf, .ni, .nl, .nn, .nv, .nx, .py, .vc, .vg, .vi) {
+  color: var(--c-text);
+}
+
+/* String, char, regex, escape. */
+.chroma :is(.s, .sa, .sb, .sc, .dl, .sd, .s2, .se, .sh, .si, .sx, .sr, .s1, .ss) {
+  color: var(--c-ok);
+}
+
+/* Number, literal. */
+.chroma :is(.m, .mb, .mf, .mh, .mi, .il, .mo, .l, .ld) {
+  color: var(--c-accent);
+}
+
+/* Comment. Dim, but AA in every palette — see scripts/contrast.py. */
+.chroma :is(.c, .ch, .cm, .cp, .cpf, .c1, .cs) {
+  color: var(--c-dim);
+}
+
+/* Generic diff and error output. */
+.chroma :is(.err, .gd, .gr) {
+  color: var(--c-err);
+}
+
+.chroma :is(.gi, .go) {
+  color: var(--c-ok);
+}
+
+.chroma :is(.ge) {
+  font-style: normal;
+  color: var(--c-bright);
+}
+
+.chroma :is(.gs, .gh, .gu) {
+  font-weight: 400;
+  color: var(--c-bright);
+}
+
+/* Line numbers and the highlighted-line band. */
+.chroma :is(.ln, .lnt) {
+  color: var(--c-dim);
+  user-select: none;
+}
+
+.chroma .hl {
+  display: block;
+  background: color-mix(in srgb, var(--c-accent) 20%, transparent);
+}
+
+.chroma .lntable {
+  display: block;
+  overflow-x: auto;
+  border-spacing: 0;
+}
+
+.chroma .lntd {
+  padding: 0;
+  border: 0;
+  vertical-align: top;
+}

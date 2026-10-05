@@ -1,0 +1,16 @@
+{{- /*
+  petscii.html — the one place in this theme where graphics are glyphs.
+
+      {{< petscii >}}
+      ████▀▀▀▀
+      ████▄▄▄▄
+      {{< /petscii >}}
+
+  Press Start 2P has no block or box-drawing glyphs (CLAUDE.md 2.3.3), so this
+  block switches to Sixtyfour, which does. Art is decorative by default; pass
+  alt="..." when it carries meaning and it becomes a labelled image role.
+*/ -}}
+{{- $alt := .Get "alt" -}}
+<pre class="petscii"{{ with $alt }} role="img" aria-label="{{ . }}"{{ else }} aria-hidden="true"{{ end }}>
+{{- .Inner | strings.TrimSpace -}}
+</pre>

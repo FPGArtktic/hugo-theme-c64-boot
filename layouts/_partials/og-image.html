@@ -1,0 +1,56 @@
+{{- /*
+  og-image.html — build the social card at build time and return the resource.
+
+  No external service and no runtime request: images.Text draws the title onto
+  a flat 1200x630 base with the bundled Press Start 2P TTF. Returns nothing if
+  either asset is missing, so og.html can fall back silently.
+
+  The TTF is the unmodified upstream file (OFL, Reserved Font Name, never
+  subset — see LICENSE-FONT.txt). Using a font to render static images is
+  explicitly permitted.
+*/ -}}
+{{- $base := resources.Get "images/og-base.png" -}}
+{{- $font := resources.Get "fonts/PressStart2P-Regular.ttf" -}}
+{{- if and $base $font -}}
+  {{- /* Press Start 2P is a fixed 8x8 cell, so wrapping is pure arithmetic:
+         at 44px about 18 cells fit inside the 1136px of screen. */ -}}
+  {{- $width := 18 -}}
+  {{- $lines := slice -}}
+  {{- $current := "" -}}
+  {{- range (upper .Title | replaceRE `\s+` " " | strings.TrimSpace | split " ") -}}
+    {{- $candidate := cond (eq $current "") . (printf "%s %s" $current .) -}}
+    {{- if le (len $candidate) $width -}}
+      {{- $current = $candidate -}}
+    {{- else -}}
+      {{- with $current }}{{ $lines = $lines | append . }}{{ end -}}
+      {{- $current = . -}}
+    {{- end -}}
+  {{- end -}}
+  {{- with $current }}{{ $lines = $lines | append . }}{{ end -}}
+  {{- $lines = first 4 $lines -}}
+
+  {{- $img := $base.Filter (images.Text (delimit $lines "\n") (dict
+        "color" "#f4f2ff"
+        "size" 44
+        "x" 64
+        "y" 140
+        "linespacing" 28
+        "font" $font
+      )) -}}
+  {{- $img = $img.Filter (images.Text (printf "LOAD\"%s\",8,1" (upper site.Title)) (dict
+        "color" "#e3a0d5"
+        "size" 22
+        "x" 64
+        "y" 72
+        "font" $font
+      )) -}}
+  {{- $img = $img.Filter (images.Text "READY." (dict
+        "color" "#8fd3d8"
+        "size" 22
+        "x" 64
+        "y" 510
+        "font" $font
+      )) -}}
+  {{- return $img.Resize "1200x630 png" -}}
+{{- end -}}
+{{- return false -}}
