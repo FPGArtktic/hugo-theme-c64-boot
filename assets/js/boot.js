@@ -8,21 +8,12 @@
  * Budget: 2.6 s to READY., 3.0 s hard ceiling (CLAUDE.md 6).
  */
 
-const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)');
 const TYPE_STEP = 40; // ms per character, about a fast typist on a C64
 const LOADER_IN = 1450; // after the LOAD line has finished typing
 const LOADER_OUT = 2300;
 const FINISH = 2600;
 
 /** sessionStorage is unavailable in some privacy modes; never let it throw. */
-function seen(key) {
-  try {
-    return window.sessionStorage.getItem(key) !== null;
-  } catch {
-    return false;
-  }
-}
-
 function remember(key) {
   try {
     window.sessionStorage.setItem(key, '1');
@@ -35,8 +26,6 @@ export default function boot(root = document) {
   const el = root.querySelector('.boot');
   if (!el) return;
 
-  // data-boot-once, not data-once: see the note in boot.html.
-  const once = el.dataset.bootOnce || 'session';
   const html = root.documentElement;
 
   const finish = () => {
@@ -51,10 +40,14 @@ export default function boot(root = document) {
     document.dispatchEvent(new CustomEvent('c64:booted'));
   };
 
-  if (once === 'never' || REDUCED.matches || (once === 'session' && seen('booted'))) {
-    html.classList.add('is-booted');
-    return;
-  }
+  /*
+   * Whether to boot at all was decided by the inline script in head.html,
+   * before the first paint — see the comment there. Doing it here instead
+   * costs a layout shift, because the block is display:none until the class
+   * lands. This module only runs the sequence.
+   */
+  if (!html.classList.contains('is-booting')) return;
+  remember('booted');
 
   const lines = [...el.querySelectorAll('.boot__line')];
   // Typed lines keep their text in data-text so the no-JS page still shows it.
@@ -65,9 +58,7 @@ export default function boot(root = document) {
     }
   });
 
-  html.classList.add('is-booting');
   document.dispatchEvent(new CustomEvent('c64:boot'));
-  remember('booted');
 
   const timers = [];
   const at = (ms, fn) => timers.push(window.setTimeout(fn, ms));

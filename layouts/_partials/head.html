@@ -46,8 +46,18 @@
 <link rel="alternate icon" href="{{ "icon-48.png" | relURL }}" sizes="48x48" type="image/png">
 <link rel="apple-touch-icon" href="{{ "apple-touch-icon.png" | relURL }}">
 
-{{- /* Restore a saved palette before the first stylesheet, which is the only
-       way to beat the first paint. palette.js does everything else. */ -}}
+{{- /*
+  Two decisions that have to be made before the first paint, which is the one
+  thing a deferred module cannot do.
+
+  The palette, so a stored choice never flashes the configured one first.
+
+  And whether the boot sequence is going to run, because the boot block is
+  display:none until something says otherwise. Letting boot.js decide meant
+  the block appeared after the first frame and pushed the page down: a real
+  layout shift, and the only reason this theme could not hold CLS at zero.
+  The sequence itself still belongs to boot.js; only the yes-or-no is here.
+*/ -}}
 <script>
   try {
     var d = document.documentElement, p = localStorage.getItem("palette");
@@ -58,6 +68,14 @@
       if (n >= 0 && n <= 15) { d.style.setProperty(e[0], "var(--c64-" + n + ")"); }
     });
   } catch (e) { /* storage blocked: the configured palette stands */ }
+{{- if and $p.boot.enabled .IsHome }}
+  try {
+    var once = {{ $p.boot.once }}, run = once !== "never";
+    if (run && once === "session" && sessionStorage.getItem("booted")) { run = false; }
+    if (run && matchMedia("(prefers-reduced-motion: reduce)").matches) { run = false; }
+    if (run) { document.documentElement.classList.add("is-booting"); }
+  } catch (e) { /* no storage, no boot: the page is simply ready */ }
+{{- end }}
 </script>
 
 {{- /* Fonts are preloaded so the first paint has the right metrics and CLS

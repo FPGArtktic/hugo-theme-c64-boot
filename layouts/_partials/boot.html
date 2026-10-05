@@ -9,15 +9,16 @@
   of the accessibility tree and the tab order either way; the SKIP link is the
   one focusable thing in here, and it is a real anchor to #main.
 
-  Two details that are not cosmetic:
-    <pre>  the KERNAL banner is column-aligned, and `hugo --minify` collapses
-           whitespace everywhere except inside pre, textarea, script and style.
-    data-boot-once  not data-once: Go's html/template strips the data- prefix
-           and then treats anything starting with "on" as an event handler, so
-           data-once would be escaped as a JavaScript string literal.
+  Whether the sequence runs at all is decided by the inline script in head.html
+  before the first paint, because this block is display:none until it says
+  otherwise and adding that class later shifts the page.
+
+  <pre> is not cosmetic either: the KERNAL banner is column-aligned, and
+  `hugo --minify` collapses whitespace everywhere except inside pre, textarea,
+  script and style.
 */ -}}
 {{- $program := substr $p.boot.program 0 16 -}}
-<pre class="boot" data-boot-once="{{ $p.boot.once }}" aria-hidden="true" inert>
+<pre class="boot" aria-hidden="true" inert>
   <span class="boot__line boot__banner" data-at="0">    **** COMMODORE 64 BASIC V2 ****</span>
   <span class="boot__line" data-at="0"> </span>
   <span class="boot__line boot__banner" data-at="0"> 64K RAM SYSTEM  38911 BASIC BYTES FREE</span>

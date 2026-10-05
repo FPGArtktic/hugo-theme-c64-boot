@@ -46,10 +46,17 @@
 /*
  * SKIP lives outside the inert boot block so it stays focusable, which means
  * it also has to be hidden whenever the boot block is.
+ *
+ * It is taken out of flow and pinned bottom-right, which is where CLAUDE.md 6
+ * asks for it and also the only way it costs nothing: in flow, appearing at
+ * the start of the boot and vanishing at the end of it moved the content
+ * under it twice, and that was the whole of this theme's CLS.
  */
 .boot__skip {
+  position: absolute;
   display: none;
-  margin-block-start: calc(var(--cell) * 2);
+  inset-block-end: calc(var(--cell) * 2);
+  inset-inline-end: var(--gutter);
   font-size: var(--size-small);
 }
 
