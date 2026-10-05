@@ -65,6 +65,9 @@
 
 /* Enter submits, but a form needs a button someone can actually reach. */
 .prompt__run {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--touch);
   padding: 0;
   color: var(--c-accent);
   text-decoration: underline;
@@ -119,6 +122,9 @@
 }
 
 .palette__btn {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--touch);
   padding: 0;
   color: var(--c-accent);
   text-decoration: underline;

@@ -81,6 +81,9 @@
 }
 
 .tags a {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--touch);
   color: var(--c-accent-2);
   text-decoration: none;
 }
@@ -94,6 +97,12 @@
 }
 
 /* Prev / next, as the drive would phrase it. */
+.post__nav a {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--touch);
+}
+
 .post__nav {
   display: flex;
   flex-wrap: wrap;

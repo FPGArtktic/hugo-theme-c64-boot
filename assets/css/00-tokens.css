@@ -151,6 +151,13 @@
   --measure: 72ch;
   --gutter: 1rem;
 
+  /*
+   * WCAG 2.2 SC 2.5.8 (AA): a target that is not inline in a sentence has to
+   * be at least 24 by 24 CSS pixels, or keep that much clear space around it.
+   * A 16px line of pixel type is 17px tall, so chrome links say so explicitly.
+   */
+  --touch: 1.5rem;
+
   /* --- Motion. 1.6 Hz cursor: one full cycle per 625 ms, well under 3 Hz. --- */
   --blink-period: 625ms;
   --type-step: 40ms;

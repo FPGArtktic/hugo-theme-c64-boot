@@ -12,7 +12,7 @@
  * Exits non-zero on the first violation of WCAG 2.2 A or AA.
  */
 
-import { createReadStream, statSync } from 'node:fs';
+import { createReadStream, readFileSync, readdirSync, statSync } from 'node:fs';
 import { createServer } from 'node:http';
 import { createRequire } from 'node:module';
 import { extname, join, normalize } from 'node:path';
@@ -75,20 +75,25 @@ function serve(dir) {
   });
 }
 
-const PAGES = [
-  '/',
-  '/about/',
-  '/projects/',
-  '/licensing/',
-  '/links/',
-  '/showcase/',
-  '/posts/',
-  '/posts/hello-world/',
-  '/posts/254-bytes-per-block/',
-  '/tags/',
-  '/tags/c64/',
-  '/404.html',
-];
+/** Every page the build produced, so a new section cannot slip past unchecked. */
+function pages(dir, base = '') {
+  const found = [];
+  for (const entry of readdirSync(dir, { withFileTypes: true })) {
+    if (entry.isDirectory()) {
+      found.push(...pages(join(dir, entry.name), `${base}/${entry.name}`));
+    } else if (entry.name.endsWith('.html')) {
+      // An alias is a <meta refresh> stub with nothing of its own to audit.
+      // Loading one lands on the destination mid-navigation, where the view
+      // transition is still fading and every colour reads as a blend.
+      const html = readFileSync(join(dir, entry.name), 'utf8');
+      if (/http-equiv=["']?refresh/i.test(html)) continue;
+      found.push(entry.name === 'index.html' ? `${base}/` : `${base}/${entry.name}`);
+    }
+  }
+  return found;
+}
+
+const PAGES = pages(root).sort();
 
 const server = await serve(root);
 const { port } = server.address();

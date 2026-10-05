@@ -101,6 +101,14 @@ main {
   font-size: var(--size-small);
 }
 
+.foot__cursor {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-inline-size: var(--touch);
+  min-block-size: var(--touch);
+}
+
 .foot__blocks {
   color: var(--c-text);
 }
@@ -116,6 +124,12 @@ main {
 
 .foot__links li::before {
   content: none;
+}
+
+.foot__links a {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--touch);
 }
 
 /*

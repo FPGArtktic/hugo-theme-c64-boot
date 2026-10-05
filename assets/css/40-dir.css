@@ -37,6 +37,10 @@
   display: grid;
   gap: 0 1ch;
   grid-template-columns: 4ch minmax(0, 20ch) 4ch minmax(0, 1fr);
+
+  /* A directory line is a target, not a word in a sentence: 24px minimum. */
+  align-content: center;
+  min-block-size: var(--touch);
   padding-block: calc(var(--cell) / 2);
   color: var(--c-text);
   text-decoration: none;
@@ -107,6 +111,12 @@
 
 .pager li::before {
   content: none;
+}
+
+.pager__item {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--touch);
 }
 
 .pager__item[aria-current="page"] {
