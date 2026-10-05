@@ -1,0 +1,21 @@
+{{ define "main" }}
+{{- /*
+  404.html — the KERNAL's answer. Two spaces before ERROR, because that is
+  how it prints.
+
+  The path is filled in by notfound.js with textContent, never innerHTML: it
+  comes from the URL, so it must never reach the parser. Without JS the page
+  still reads LOAD"$",8 and the same error, and the directory below it is a
+  real way out.
+*/ -}}
+<p class="load-line">LOAD&quot;<span data-notfound-path>$</span>&quot;,8</p>
+<p class="load-line">SEARCHING FOR <span data-notfound-path>$</span></p>
+<h1 class="post__title">?FILE NOT FOUND&nbsp;&nbsp;ERROR</h1>
+<p class="ready">READY.<span class="cursor" aria-hidden="true"></span></p>
+{{- $entries := partial "menu-entries.html" . -}}
+{{- $entries = $entries | append (partial "dir-entries.html" (dict "pages" (first 10 site.RegularPages) "current" .)) -}}
+{{- partial "dir.html" (dict
+    "entries" $entries
+    "label" (i18n "directory")
+    "free" false) }}
+{{ end }}

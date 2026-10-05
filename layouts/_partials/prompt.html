@@ -1,0 +1,46 @@
+{{- $p := partialCached "params.html" . -}}
+{{- /*
+  prompt.html — the BASIC console, closed until the hotkey or the footer
+  cursor opens it.
+
+  LIST and LOAD need the site directory, so it is rendered here as JSON: no
+  request, no index to keep in step, and prompt.js only ever reads it with
+  JSON.parse and writes it out with textContent.
+*/ -}}
+{{- $entries := slice -}}
+{{- range site.RegularPages -}}
+  {{- $blocks := math.Ceil (div (len .RawContent | float) 254.0) | int -}}
+  {{- $entries = $entries | append (dict
+      "name" (upper (substr (or .LinkTitle .Title) 0 16))
+      "slug" (path.Base .RelPermalink)
+      "url" .RelPermalink
+      "blocks" (cond (lt $blocks 1) 1 $blocks)
+      "type" (cond (ne .Section "") "SEQ" "PRG")
+    ) -}}
+{{- end -}}
+{{- range site.Sections -}}
+  {{- $entries = $entries | append (dict
+      "name" (upper (substr (or .LinkTitle .Title) 0 16))
+      "slug" (path.Base .RelPermalink)
+      "url" .RelPermalink
+      "blocks" 1
+      "type" "PRG"
+    ) -}}
+{{- end -}}
+<section class="prompt" hidden aria-label="{{ i18n "prompt" }}"
+  data-hotkey="{{ $p.prompt.hotkey }}"
+  data-home="{{ "" | relURL }}"
+  data-disk-name="{{ $p.dir.diskName }}"
+  data-disk-id="{{ $p.dir.diskId }}"
+  data-free="{{ replaceRE `[^0-9]` "" (partialCached "blocks-free.html" .) }}">
+  <p class="prompt__out" role="log" aria-live="polite"></p>
+  <form class="prompt__form" autocomplete="off">
+    <span class="prompt__sigil" aria-hidden="true">&gt;</span>
+    <label class="skip" for="c64-prompt-input">{{ i18n "promptLabel" }}</label>
+    <input class="prompt__input" id="c64-prompt-input" name="basic" type="text"
+      spellcheck="false" autocapitalize="characters" enterkeyhint="go">
+    <button class="prompt__run" type="submit">RUN</button>
+  </form>
+  <p class="prompt__hint">{{ i18n "promptHint" }}</p>
+</section>
+<script type="application/json" id="c64-dir">{{ $entries | jsonify }}</script>

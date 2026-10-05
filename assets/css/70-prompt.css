@@ -1,0 +1,139 @@
+/*
+ * 70-prompt.css — the BASIC console (hotkey `, or the footer cursor).
+ *
+ * It is a region, not a modal dialog: it docks to the bottom of the screen,
+ * never covers the content it belongs to, and Escape closes it.
+ */
+
+.prompt {
+  position: fixed;
+  z-index: 20;
+  inset-block-end: var(--border-w);
+  inset-inline: var(--border-w);
+  max-block-size: 60vh;
+  padding: calc(var(--cell) * 2) var(--gutter);
+  overflow-y: auto;
+  border-block-start: 2px solid var(--c-dim);
+  background: var(--c-screen);
+  font-size: var(--size-small);
+  line-height: var(--line-tight);
+}
+
+.prompt[hidden] {
+  display: none;
+}
+
+.prompt__out {
+  margin: 0;
+  max-inline-size: var(--measure);
+  margin-inline: auto;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.prompt__line {
+  display: block;
+}
+
+.prompt__line--err {
+  color: var(--c-err);
+}
+
+.prompt__line--ok {
+  color: var(--c-ok);
+}
+
+.prompt__form {
+  display: flex;
+  align-items: baseline;
+  gap: 1ch;
+  max-inline-size: var(--measure);
+  margin-inline: auto;
+  margin-block-start: calc(var(--cell) * 2);
+}
+
+.prompt__sigil {
+  color: var(--c-bright);
+}
+
+.prompt__input {
+  flex: 1 1 auto;
+  min-inline-size: 0;
+  color: var(--c-bright);
+  text-transform: uppercase;
+}
+
+/* Enter submits, but a form needs a button someone can actually reach. */
+.prompt__run {
+  padding: 0;
+  color: var(--c-accent);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
+.prompt__hint {
+  color: var(--c-dim);
+}
+
+/* The maze: 10 PRINT CHR$(205.5+RND(1)); : GOTO 10 */
+.prompt__maze {
+  display: block;
+  color: var(--c-accent);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  line-height: 1;
+}
+
+/*
+ * The palette switcher is a BASIC line, not a swatch grid:
+ *   POKE 53280,14 : POKE 53281,6
+ */
+.palette {
+  margin-block-start: calc(var(--cell) * 4);
+  font-size: var(--size-small);
+}
+
+.palette__group {
+  margin-block: var(--cell);
+  border: 0;
+  padding: 0;
+}
+
+.palette__legend {
+  padding: 0;
+  color: var(--c-dim);
+}
+
+.palette__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 2ch;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.palette__list li::before {
+  content: none;
+}
+
+.palette__btn {
+  padding: 0;
+  color: var(--c-accent);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
+.palette__btn[aria-pressed="true"] {
+  color: var(--c-screen);
+  background: var(--c-accent);
+  text-decoration: none;
+}
+
+.palette__poke {
+  display: block;
+  margin-block-start: var(--cell);
+  color: var(--c-dim);
+}
