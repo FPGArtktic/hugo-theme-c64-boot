@@ -31,7 +31,7 @@ jobs:
         run: |
           hugo --source exampleSite --themesDir ../.. --gc --minify \
                --baseURL "${{ steps.pages.outputs.base_url }}/"
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: exampleSite/public
 
